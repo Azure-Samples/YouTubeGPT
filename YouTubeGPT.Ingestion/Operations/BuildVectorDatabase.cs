@@ -1,5 +1,6 @@
 ﻿using Microsoft.SemanticKernel.Memory;
 using Spectre.Console;
+using System.Text.Json;
 using YoutubeExplode;
 using YoutubeExplode.Channels;
 using YouTubeGPT.Ingestion.Models;
@@ -73,11 +74,23 @@ internal class BuildVectorDatabaseOperationHandler(
             await yt.Videos.ClosedCaptions.WriteToAsync(track, textWriter, new ConsoleProgress());
 
             var captions = textWriter.ToString();
-
-            var key1 = await memory.SaveInformationAsync($"{channel.Id}_{Constants.CaptionsCollectionSuffix}", captions, playlistVideo.Id);
-
             var video = await yt.Videos.GetAsync(playlistVideo.Id);
-            var key2 = await memory.SaveInformationAsync($"{channel.Id}_{Constants.DescriptionsCollectionSuffix}", video.Description, video.Id);
+
+            var videoMetadata = new VideoMetadata()
+            {
+                Description = video.Description,
+                Title = video.Title,
+                Duration = video.Duration,
+                Author = video.Author,
+                Url = video.Url,
+                UploadDate = video.UploadDate,
+                Keywords = video.Keywords
+            };
+
+            var additionalMetadata = JsonSerializer.Serialize(videoMetadata);
+
+            var key1 = await memory.SaveInformationAsync($"{channel.Id}_{Constants.CaptionsCollectionSuffix}", captions, playlistVideo.Id, additionalMetadata: additionalMetadata);
+            var key2 = await memory.SaveInformationAsync($"{channel.Id}_{Constants.DescriptionsCollectionSuffix}", video.Description, video.Id, additionalMetadata: additionalMetadata);
 
             await Console.Out.WriteLineAsync($"Video '{video.Title}' has been saved to memory.");
             logger.LogInformation("Video {VideoTitle}({VideoId}) has been saved to memory", video.Title, video.Id);
