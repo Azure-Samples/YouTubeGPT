@@ -2,6 +2,7 @@
 using Spectre.Console;
 using YoutubeExplode;
 using YoutubeExplode.Channels;
+using YouTubeGPT.Ingestion.Models;
 
 namespace YouTubeGPT.Ingestion.Operations;
 
@@ -10,7 +11,8 @@ internal class BuildVectorDatabaseOperationHandler(
 #pragma warning disable SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
     ISemanticTextMemory memory,
 #pragma warning restore SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-    ILogger<BuildVectorDatabaseOperationHandler> logger)
+    ILogger<BuildVectorDatabaseOperationHandler> logger,
+    MetadataDbContext metadataDbContext)
 {
     public async Task Handle()
     {
@@ -72,16 +74,28 @@ internal class BuildVectorDatabaseOperationHandler(
 
             var captions = textWriter.ToString();
 
-            var key1 = await memory.SaveInformationAsync($"{channel.Id}-captions", captions, playlistVideo.Id);
+            var key1 = await memory.SaveInformationAsync($"{channel.Id}_{Constants.CaptionsCollectionSuffix}", captions, playlistVideo.Id);
 
             var video = await yt.Videos.GetAsync(playlistVideo.Id);
-            var key2 = await memory.SaveInformationAsync($"{channel.Id}-descriptions", video.Description, video.Id);
+            var key2 = await memory.SaveInformationAsync($"{channel.Id}_{Constants.DescriptionsCollectionSuffix}", video.Description, video.Id);
 
             await Console.Out.WriteLineAsync($"Video '{video.Title}' has been saved to memory.");
             logger.LogInformation("Video {VideoTitle}({VideoId}) has been saved to memory", video.Title, video.Id);
 
             // only increment the video count if we've successfully saved the video to memory
             videoCount++;
+        }
+
+        if (videoCount > 0)
+        {
+            metadataDbContext.Metadata.Add(new MemoryMetadata
+            {
+                ChannelId = channel.Id,
+                ChannelUrl = channel.Url,
+                CollectionName = channel.Id,
+                Title = channel.Title,
+            });
+            await metadataDbContext.SaveChangesAsync();
         }
     }
 }

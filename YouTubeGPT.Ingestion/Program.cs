@@ -12,6 +12,7 @@ var builder = Host.CreateApplicationBuilder();
 
 builder.AddAzureOpenAI("AzureOpenAI");
 builder.AddNpgsqlDataSource("vector-db", null, builder => builder.UseVector());
+builder.AddNpgsqlDbContext<MetadataDbContext>("metadata");
 
 builder.Services.AddScoped(provider =>
 {

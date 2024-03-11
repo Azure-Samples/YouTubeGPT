@@ -7,12 +7,14 @@
     <PackageVersion Include="Aspire.Hosting.Azure" Version="8.0.0-preview.4.24156.9" />
     <PackageVersion Include="Aspire.Hosting" Version="8.0.0-preview.4.24156.9" />
     <PackageVersion Include="Aspire.Npgsql" Version="8.0.0-preview.4.24156.9" />
+    <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.4.24156.9" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="8.2.0" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="8.0.0-preview.4.24156.9" />
     <PackageVersion Include="Microsoft.SemanticKernel" Version="1.5.0" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.Postgres" Version="1.5.0-alpha" />
     <PackageVersion Include="Microsoft.SemanticKernel.Plugins.Memory" Version="1.5.0-alpha" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
     <PackageVersion Include="Spectre.Console" Version="0.48.0" />
     <PackageVersion Include="YoutubeExplode" Version="6.3.13" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.7.0" />

@@ -10,10 +10,12 @@
   <ItemGroup>
     <PackageReference Include="Aspire.Azure.AI.OpenAI" />
     <PackageReference Include="Aspire.Npgsql" />
+    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.SemanticKernel" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.Postgres" />
     <PackageReference Include="Microsoft.SemanticKernel.Plugins.Memory" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
     <PackageReference Include="Spectre.Console" />
     <PackageReference Include="YoutubeExplode" />
   </ItemGroup>

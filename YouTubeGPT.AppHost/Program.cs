@@ -19,10 +19,12 @@ if (builder.Environment.IsDevelopment())
 }
 
 var vectorDB = pgContainer.AddDatabase("youtube");
+var metadataDB = pgContainer.AddDatabase("metadata");
 
 builder.AddProject<Projects.YouTubeGPT_Ingestion>("youtubegpt-ingestion")
     .WithReference(ai)
     .WithReference(vectorDB)
+    .WithReference(metadataDB)
     .WithConfiguration("Azure:AI:EmbeddingDeploymentName");
 
 builder.Build().Run();
