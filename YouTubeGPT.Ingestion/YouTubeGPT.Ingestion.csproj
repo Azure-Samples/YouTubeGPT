@@ -8,9 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspire.Azure.AI.OpenAI" />
+    <PackageReference Include="Aspire.Npgsql" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.SemanticKernel" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.Postgres" />
+    <PackageReference Include="Microsoft.SemanticKernel.Plugins.Memory" />
     <PackageReference Include="Spectre.Console" />
     <PackageReference Include="YoutubeExplode" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\YouTubeGPT.ServiceDefaults\YouTubeGPT.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>

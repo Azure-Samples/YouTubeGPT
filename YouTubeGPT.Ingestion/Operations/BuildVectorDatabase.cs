@@ -1,4 +1,5 @@
-﻿using Spectre.Console;
+﻿using Microsoft.SemanticKernel.Memory;
+using Spectre.Console;
 using YoutubeExplode;
 using YoutubeExplode.Channels;
 
@@ -6,6 +7,9 @@ namespace YouTubeGPT.Ingestion.Operations;
 
 internal class BuildVectorDatabaseOperationHandler(
     YoutubeClient yt,
+#pragma warning disable SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+    ISemanticTextMemory memory,
+#pragma warning restore SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
     ILogger<BuildVectorDatabaseOperationHandler> logger)
 {
     public async Task Handle()
@@ -37,30 +41,47 @@ internal class BuildVectorDatabaseOperationHandler(
 
         var uploads = yt.Channels.GetUploadsAsync(channel.Id);
 
-        await foreach (var video in uploads)
+        int maxVideos = AnsiConsole.Ask("Enter the maximum number of videos to process (10): ", 10);
+        int videoCount = 0;
+
+        await foreach (var playlistVideo in uploads)
         {
-            if (video.Duration is null)
+            if (videoCount == maxVideos)
             {
-                logger.LogInformation("Skipping '{Title}' ({Url}) as there is no duration, so it's probably upcoming", video.Title, video.Url);
+                break;
+            }
+
+            if (playlistVideo.Duration is null)
+            {
+                logger.LogInformation("Skipping '{Title}' ({Url}) as there is no duration, so it's probably upcoming", playlistVideo.Title, playlistVideo.Url);
                 continue;
             }
 
-            logger.LogInformation("Downloading transcript for '{Title}' ({Id})", video.Title, video.Id);
-            var trackManifest = await yt.Videos.ClosedCaptions.GetManifestAsync(video.Id);
+            logger.LogInformation("Downloading transcript for '{Title}' ({Id})", playlistVideo.Title, playlistVideo.Id);
+            var trackManifest = await yt.Videos.ClosedCaptions.GetManifestAsync(playlistVideo.Id);
             var track = trackManifest.TryGetByLanguage("en");
             if (track is null)
             {
-                logger.LogInformation("Video {Id} doesn't have an English transcript", video.Id);
+                logger.LogInformation("Video {Id} doesn't have an English transcript", playlistVideo.Id);
                 continue;
             }
 
-            await Console.Out.WriteLineAsync($"Downloading caption for '{video.Title}'");
+            await Console.Out.WriteLineAsync($"Downloading caption for '{playlistVideo.Title}'");
             using var textWriter = new StringWriter();
             await yt.Videos.ClosedCaptions.WriteToAsync(track, textWriter, new ConsoleProgress());
 
             var captions = textWriter.ToString();
 
-            await Console.Out.WriteLineAsync(captions);
+            var key1 = await memory.SaveInformationAsync($"{channel.Id}-captions", captions, playlistVideo.Id);
+
+            var video = await yt.Videos.GetAsync(playlistVideo.Id);
+            var key2 = await memory.SaveInformationAsync($"{channel.Id}-descriptions", video.Description, video.Id);
+
+            await Console.Out.WriteLineAsync($"Video '{video.Title}' has been saved to memory.");
+            logger.LogInformation("Video {VideoTitle}({VideoId}) has been saved to memory", video.Title, video.Id);
+
+            // only increment the video count if we've successfully saved the video to memory
+            videoCount++;
         }
     }
 }
