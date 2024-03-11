@@ -13,7 +13,8 @@ var pgContainer = builder.AddPostgres("vector-db")
 if (builder.Environment.IsDevelopment())
 {
     pgContainer = pgContainer
-        .WithAnnotation(new ContainerImageAnnotation { Image = "ankane/pgvector", Tag = "latest" })
+        .WithImage("ankane/pgvector")
+        .WithImageTag("latest")
         .WithVolumeMount("./data/postgres", "/var/lib/postgresql/data");
 }
 
