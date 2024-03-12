@@ -14,8 +14,8 @@
     <PackageVersion Include="Microsoft.SemanticKernel" Version="1.5.0" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.Postgres" Version="1.5.0-alpha" />
     <PackageVersion Include="Microsoft.SemanticKernel.Plugins.Memory" Version="1.5.0-alpha" />
+    <PackageVersion Include="MudBlazor" Version="6.17.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
-    <PackageVersion Include="Spectre.Console" Version="0.48.0" />
     <PackageVersion Include="YoutubeExplode" Version="6.3.13" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.7.0" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.7.0" />

@@ -1,14 +1,19 @@
 ﻿using Azure.AI.OpenAI;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Connectors.Postgres;
 using Microsoft.SemanticKernel.Embeddings;
 using Microsoft.SemanticKernel.Memory;
+using MudBlazor.Services;
 using Npgsql;
 using YoutubeExplode;
 using YouTubeGPT.Ingestion;
+using YouTubeGPT.Ingestion.Components;
 using YouTubeGPT.Ingestion.Operations;
 
-var builder = Host.CreateApplicationBuilder();
+var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
 
 builder.AddAzureOpenAI("AzureOpenAI");
 builder.AddKeyedNpgsqlDataSource("vectors", null, builder => builder.UseVector());
@@ -55,12 +60,33 @@ builder.Services.AddScoped(provider =>
     return memory;
 });
 
-builder.Services.AddHostedService<Worker>();
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+
+builder.Services.AddMudServices();
 
 builder.Services.AddScoped<BuildVectorDatabaseOperationHandler>();
 
 builder.Services.AddScoped<YoutubeClient>();
 
-builder.AddServiceDefaults();
+WebApplication app = builder.Build();
 
-await builder.Build().StartAsync();
+app.MapDefaultEndpoints();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+app.UseAntiforgery();
+
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
+
+app.Run();

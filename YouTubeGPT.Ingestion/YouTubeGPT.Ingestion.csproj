@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -15,8 +15,8 @@
     <PackageReference Include="Microsoft.SemanticKernel" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.Postgres" />
     <PackageReference Include="Microsoft.SemanticKernel.Plugins.Memory" />
+    <PackageReference Include="MudBlazor" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
-    <PackageReference Include="Spectre.Console" />
     <PackageReference Include="YoutubeExplode" />
   </ItemGroup>
 

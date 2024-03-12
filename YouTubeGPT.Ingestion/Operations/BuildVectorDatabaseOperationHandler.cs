@@ -1,5 +1,4 @@
 ﻿using Microsoft.SemanticKernel.Memory;
-using Spectre.Console;
 using System.Text.Json;
 using YoutubeExplode;
 using YoutubeExplode.Channels;
@@ -7,7 +6,7 @@ using YouTubeGPT.Ingestion.Models;
 
 namespace YouTubeGPT.Ingestion.Operations;
 
-internal class BuildVectorDatabaseOperationHandler(
+public class BuildVectorDatabaseOperationHandler(
     YoutubeClient yt,
 #pragma warning disable SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
     ISemanticTextMemory memory,
@@ -15,10 +14,8 @@ internal class BuildVectorDatabaseOperationHandler(
     ILogger<BuildVectorDatabaseOperationHandler> logger,
     MetadataDbContext metadataDbContext)
 {
-    public async Task Handle()
+    public async Task Handle(string channelUrl, int maxVideos = 10)
     {
-        var channelUrl = AnsiConsole.Ask<string>("Enter YouTube channel URL: ");
-
         Channel channel;
 
         try
@@ -44,7 +41,6 @@ internal class BuildVectorDatabaseOperationHandler(
 
         var uploads = yt.Channels.GetUploadsAsync(channel.Id);
 
-        int maxVideos = AnsiConsole.Ask("Enter the maximum number of videos to process (10): ", 10);
         int videoCount = 0;
 
         await foreach (var playlistVideo in uploads)
@@ -71,7 +67,7 @@ internal class BuildVectorDatabaseOperationHandler(
 
             await Console.Out.WriteLineAsync($"Downloading caption for '{playlistVideo.Title}'");
             using var textWriter = new StringWriter();
-            await yt.Videos.ClosedCaptions.WriteToAsync(track, textWriter, new ConsoleProgress());
+            await yt.Videos.ClosedCaptions.WriteToAsync(track, textWriter);
 
             var captions = textWriter.ToString();
             var video = await yt.Videos.GetAsync(playlistVideo.Id);
