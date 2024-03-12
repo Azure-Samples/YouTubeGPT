@@ -11,7 +11,7 @@ using YouTubeGPT.Ingestion.Operations;
 var builder = Host.CreateApplicationBuilder();
 
 builder.AddAzureOpenAI("AzureOpenAI");
-builder.AddNpgsqlDataSource("vector-db", null, builder => builder.UseVector());
+builder.AddKeyedNpgsqlDataSource("vectors", null, builder => builder.UseVector());
 builder.AddNpgsqlDbContext<MetadataDbContext>("metadata");
 
 builder.Services.AddScoped(provider =>
@@ -29,7 +29,12 @@ builder.Services.AddScoped(provider =>
 
 #pragma warning disable SKEXP0032 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 #pragma warning disable SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-builder.Services.AddScoped<IMemoryStore, PostgresMemoryStore>();
+builder.Services.AddScoped<IMemoryStore, PostgresMemoryStore>(provider =>
+{
+    var dataSource = provider.GetRequiredKeyedService<NpgsqlDataSource>("vectors");
+
+    return new(dataSource, 1536);
+});
 #pragma warning restore SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 #pragma warning restore SKEXP0032 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 

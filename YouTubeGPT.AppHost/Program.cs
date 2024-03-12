@@ -7,7 +7,7 @@ var ai = builder.ExecutionContext.IsPublishMode ?
     builder.AddAzureOpenAI("AzureOpenAI") :
     builder.AddConnectionString("AzureOpenAI");
 
-var pgContainer = builder.AddPostgres("vector-db")
+var pgContainer = builder.AddPostgres("postgres")
     .WithPgAdmin();
 
 if (builder.Environment.IsDevelopment())
@@ -18,7 +18,7 @@ if (builder.Environment.IsDevelopment())
         .WithBindMount("./data/postgres", "/var/lib/postgresql/data");
 }
 
-var vectorDB = pgContainer.AddDatabase("youtube");
+var vectorDB = pgContainer.AddDatabase("vectors");
 var metadataDB = pgContainer.AddDatabase("metadata");
 
 builder.AddProject<Projects.YouTubeGPT_Ingestion>("youtubegpt-ingestion")
