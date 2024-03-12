@@ -3,3 +3,5 @@ obj
 bin
 
 appsettings.*.json
+
+YouTubeGPT.AppHost/data
