@@ -3,9 +3,9 @@ using YouTubeGPT.AppHost;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var ai = builder.AddAzureOpenAI("AzureOpenAI");
-ai.AddDeployment("gpt-4");
-ai.AddDeployment("text-embedding-ada-002");
+var ai = builder.ExecutionContext.IsPublishMode ?
+    builder.AddAzureOpenAI("AzureOpenAI") :
+    builder.AddConnectionString("AzureOpenAI");
 
 var pgContainer = builder.AddPostgres("vector-db")
     .WithPgAdmin();
@@ -15,7 +15,7 @@ if (builder.Environment.IsDevelopment())
     pgContainer = pgContainer
         .WithImage("ankane/pgvector")
         .WithImageTag("latest")
-        .WithVolumeMount("./data/postgres", "/var/lib/postgresql/data");
+        .WithBindMount("./data/postgres", "/var/lib/postgresql/data");
 }
 
 var vectorDB = pgContainer.AddDatabase("youtube");
