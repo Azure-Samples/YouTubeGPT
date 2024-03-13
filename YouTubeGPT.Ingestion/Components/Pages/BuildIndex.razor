@@ -10,15 +10,23 @@
         <MudCardContent>
             <EditForm Model="@model">
                 <MudForm>
-                    <MudTextField Label="Channel URL" @bind-Value="model.ChannelUrl" For="() => model.ChannelUrl" />
+                    <MudTextField Label="Channel URL" @bind-Value="model.ChannelUrl" For="() => model.ChannelUrl" Disabled="showProgress" />
 
-                    <MudTextField Label="Max video count" @bind-Value="model.MaxVideos" For="() => model.MaxVideos" />
+                    <MudTextField Label="Max video count" @bind-Value="model.MaxVideos" For="() => model.MaxVideos" Disabled="showProgress" />
                 </MudForm>
             </EditForm>
         </MudCardContent>
 
         <MudCardActions>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="BuildIndexAsync">Build Index</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="BuildIndexAsync" Disabled="showProgress">Build Index</MudButton>
+            @if (showProgress)
+            {
+                <MudProgressLinear Color="Color.Primary" Value="progress" Class="my-7">
+                    <MudText Typo="Typo.subtitle1" Color="Color.Dark">
+                        <strong>@progress%</strong>
+                    </MudText>
+                </MudProgressLinear>
+            }
         </MudCardActions>
     </MudCard>
 

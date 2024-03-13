@@ -6,6 +6,8 @@ namespace YouTubeGPT.Ingestion.Components.Pages;
 public partial class BuildIndex
 {
     BuildIndexModel model = new();
+    private int progress = 0;
+    private bool showProgress = false;
 
     [Inject]
     public required BuildVectorDatabaseOperationHandler Operation { get; set; }
@@ -14,12 +16,20 @@ public partial class BuildIndex
     {
         try
         {
-            await Operation.Handle(model.ChannelUrl, model.MaxVideos);
+            progress = 0;
+            showProgress = true;
+            await Operation.Handle(model.ChannelUrl, new Progress<int>(p =>
+            {
+                progress = p;
+                StateHasChanged();
+            }), model.MaxVideos);
         }
         catch (Exception ex)
         {
             await Console.Out.WriteLineAsync(ex.ToString());
         }
+
+        showProgress = false;
     }
 
     class BuildIndexModel

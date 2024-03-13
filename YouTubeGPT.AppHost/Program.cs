@@ -4,7 +4,9 @@ using YouTubeGPT.AppHost;
 var builder = DistributedApplication.CreateBuilder(args);
 
 var ai = builder.ExecutionContext.IsPublishMode ?
-    builder.AddAzureOpenAI("AzureOpenAI") :
+    builder.AddAzureOpenAI("AzureOpenAI")
+        .WithDeployment(new("gpt-35-turbo", "gpt-35-turbo", "1106"))
+        .WithDeployment(new("text-embedding-ada-002", "text-embedding-ada-002", "2")):
     builder.AddConnectionString("AzureOpenAI");
 
 var pgContainer = builder

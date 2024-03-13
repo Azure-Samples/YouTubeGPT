@@ -14,7 +14,7 @@ public class BuildVectorDatabaseOperationHandler(
     ILogger<BuildVectorDatabaseOperationHandler> logger,
     MetadataDbContext metadataDbContext)
 {
-    public async Task Handle(string channelUrl, int maxVideos = 10)
+    public async Task Handle(string channelUrl, IProgress<int> progress, int maxVideos = 10)
     {
         Channel channel;
 
@@ -93,7 +93,10 @@ public class BuildVectorDatabaseOperationHandler(
 
             // only increment the video count if we've successfully saved the video to memory
             videoCount++;
+            progress.Report(6 / 10 * 100);
         }
+
+        progress.Report(100);
 
         if (videoCount > 0)
         {
