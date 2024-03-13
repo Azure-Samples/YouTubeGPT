@@ -85,7 +85,7 @@ public class BuildVectorDatabaseOperationHandler(
 
             var additionalMetadata = JsonSerializer.Serialize(videoMetadata);
 
-            var key1 = await memory.SaveInformationAsync($"{channel.Id}_{Constants.CaptionsCollectionSuffix}", captions, playlistVideo.Id, additionalMetadata: additionalMetadata);
+            //var key1 = await memory.SaveInformationAsync($"{channel.Id}_{Constants.CaptionsCollectionSuffix}", captions, playlistVideo.Id, additionalMetadata: additionalMetadata);
             var key2 = await memory.SaveInformationAsync($"{channel.Id}_{Constants.DescriptionsCollectionSuffix}", video.Description, video.Id, additionalMetadata: additionalMetadata);
 
             await Console.Out.WriteLineAsync($"Video '{video.Title}' has been saved to memory.");

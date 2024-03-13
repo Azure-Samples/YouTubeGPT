@@ -8,6 +8,10 @@
     <PackageVersion Include="Aspire.Hosting" Version="8.0.0-preview.4.24156.9" />
     <PackageVersion Include="Aspire.Npgsql" Version="8.0.0-preview.4.24156.9" />
     <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.4.24156.9" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageVersion>
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="8.2.0" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="8.0.0-preview.4.24156.9" />

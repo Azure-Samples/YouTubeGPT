@@ -12,7 +12,14 @@ public partial class BuildIndex
 
     private async Task BuildIndexAsync()
     {
-        await Operation.Handle(model.ChannelUrl, model.MaxVideos);
+        try
+        {
+            await Operation.Handle(model.ChannelUrl, model.MaxVideos);
+        }
+        catch (Exception ex)
+        {
+            await Console.Out.WriteLineAsync(ex.ToString());
+        }
     }
 
     class BuildIndexModel

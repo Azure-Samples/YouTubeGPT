@@ -7,7 +7,11 @@ var ai = builder.ExecutionContext.IsPublishMode ?
     builder.AddAzureOpenAI("AzureOpenAI") :
     builder.AddConnectionString("AzureOpenAI");
 
-var pgContainer = builder.AddPostgres("postgres")
+var pgContainer = builder
+    .AddPostgres(
+        "postgres",
+        password: builder.Configuration["Aspire:Postgres:Password"]
+    )
     .WithPgAdmin();
 
 if (builder.Environment.IsDevelopment())
@@ -15,7 +19,9 @@ if (builder.Environment.IsDevelopment())
     pgContainer = pgContainer
         .WithImage("ankane/pgvector")
         .WithImageTag("latest")
-        .WithBindMount("./data/postgres", "/var/lib/postgresql/data");
+        .WithBindMount("./database", "/docker-entrypoint-initdb.d")
+        //.WithBindMount("./data/postgres", "/var/lib/postgresql/data")
+        ;
 }
 
 var vectorDB = pgContainer.AddDatabase("vectors");
