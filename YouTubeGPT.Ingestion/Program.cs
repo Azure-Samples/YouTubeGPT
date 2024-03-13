@@ -1,5 +1,4 @@
 ﻿using Azure.AI.OpenAI;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Connectors.Postgres;
 using Microsoft.SemanticKernel.Embeddings;
@@ -15,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-builder.AddAzureOpenAI("AzureOpenAI");
+builder.AddAzureOpenAIClient("AzureOpenAI");
 builder.AddKeyedNpgsqlDataSource("vectors", null, builder => builder.UseVector());
 builder.AddNpgsqlDbContext<MetadataDbContext>("metadata");
 

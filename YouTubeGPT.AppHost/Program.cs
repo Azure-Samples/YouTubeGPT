@@ -33,4 +33,7 @@ builder.AddProject<Projects.YouTubeGPT_Ingestion>("youtubegpt-ingestion")
     .WithReference(metadataDB)
     .WithConfiguration("Azure:AI:EmbeddingDeploymentName");
 
+builder.AddProject<Projects.YouTubeGPT_DatabaseMigrator>("youtubegpt-databasemigrator")
+    .WithReference(metadataDB);
+
 builder.Build().Run();
