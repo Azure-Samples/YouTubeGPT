@@ -5,3 +5,4 @@ bin
 appsettings.*.json
 
 YouTubeGPT.AppHost/data
+*.user

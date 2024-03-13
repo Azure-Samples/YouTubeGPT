@@ -43,4 +43,6 @@ if (!builder.ExecutionContext.IsPublishMode)
         .WithReference(metadataDB);
 }
 
+builder.AddProject<Projects.YouTubeGPT_Client>("youtubegpt-client");
+
 builder.Build().Run();
