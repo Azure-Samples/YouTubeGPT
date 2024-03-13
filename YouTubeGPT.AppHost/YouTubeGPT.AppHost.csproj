@@ -17,6 +17,7 @@
     <ProjectReference Include="..\YouTubeGPT.Client\YouTubeGPT.Client.csproj" />
     <ProjectReference Include="..\YouTubeGPT.DatabaseMigrator\YouTubeGPT.DatabaseMigrator.csproj" />
     <ProjectReference Include="..\YouTubeGPT.Ingestion\YouTubeGPT.Ingestion.csproj" />
+    <ProjectReference Include="..\YouTubeGPT.Shared\YouTubeGPT.Shared.csproj" IsAspireProjectResource="false" />
   </ItemGroup>
 
 </Project>

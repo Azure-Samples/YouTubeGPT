@@ -10,6 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\YouTubeGPT.Database\YouTubeGPT.Database.csproj" />
     <ProjectReference Include="..\YouTubeGPT.ServiceDefaults\YouTubeGPT.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\YouTubeGPT.Shared\YouTubeGPT.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

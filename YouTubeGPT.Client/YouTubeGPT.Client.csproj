@@ -9,17 +9,13 @@
   <ItemGroup>
     <ProjectReference Include="..\YouTubeGPT.Database\YouTubeGPT.Database.csproj" />
     <ProjectReference Include="..\YouTubeGPT.ServiceDefaults\YouTubeGPT.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\YouTubeGPT.Shared\YouTubeGPT.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MudBlazor" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
-    <PackageReference Include="Aspire.Azure.AI.OpenAI" />
-    <PackageReference Include="Aspire.Npgsql" />
-    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
-    <PackageReference Include="Microsoft.SemanticKernel" />
-    <PackageReference Include="Microsoft.SemanticKernel.Connectors.Postgres" />
-    <PackageReference Include="Microsoft.SemanticKernel.Plugins.Memory" />
+    
   </ItemGroup>
 
 </Project>

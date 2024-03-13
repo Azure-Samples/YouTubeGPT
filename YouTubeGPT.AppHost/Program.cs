@@ -1,13 +1,14 @@
 using Microsoft.Extensions.Hosting;
 using YouTubeGPT.AppHost;
+using YouTubeGPT.Shared;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
 var ai = builder.ExecutionContext.IsPublishMode ?
-    builder.AddAzureOpenAI("AzureOpenAI")
+    builder.AddAzureOpenAI(ServiceNames.AzureOpenAI)
         .WithDeployment(new("gpt-35-turbo", "gpt-35-turbo", "1106"))
         .WithDeployment(new("text-embedding-ada-002", "text-embedding-ada-002", "2")) :
-    builder.AddConnectionString("AzureOpenAI");
+    builder.AddConnectionString(ServiceNames.AzureOpenAI);
 
 var pgContainer = builder
     .AddPostgres(
@@ -26,8 +27,8 @@ if (builder.Environment.IsDevelopment())
         ;
 }
 
-var vectorDB = pgContainer.AddDatabase("vectors");
-var metadataDB = pgContainer.AddDatabase("metadata");
+var vectorDB = pgContainer.AddDatabase(ServiceNames.VectorDB);
+var metadataDB = pgContainer.AddDatabase(ServiceNames.MetadataDB);
 
 builder.AddProject<Projects.YouTubeGPT_Ingestion>("youtubegpt-ingestion")
     .WithReference(ai)

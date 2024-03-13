@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.DatabaseMigrator
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.Client", "YouTubeGPT.Client\YouTubeGPT.Client.csproj", "{553C211E-900A-4D30-A89E-FB5EE1A2D2A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouTubeGPT.Shared", "YouTubeGPT.Shared\YouTubeGPT.Shared.csproj", "{397F5801-0093-47CB-92C0-3F2C5F6CA1B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{553C211E-900A-4D30-A89E-FB5EE1A2D2A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{553C211E-900A-4D30-A89E-FB5EE1A2D2A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{553C211E-900A-4D30-A89E-FB5EE1A2D2A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{397F5801-0093-47CB-92C0-3F2C5F6CA1B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{397F5801-0093-47CB-92C0-3F2C5F6CA1B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{397F5801-0093-47CB-92C0-3F2C5F6CA1B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{397F5801-0093-47CB-92C0-3F2C5F6CA1B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

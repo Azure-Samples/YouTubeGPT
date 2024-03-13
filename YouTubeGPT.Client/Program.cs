@@ -8,14 +8,16 @@ using Npgsql;
 using YouTubeGPT.Client;
 using YouTubeGPT.Client.Components;
 using YouTubeGPT.Ingestion;
+using YouTubeGPT.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-builder.AddKeyedNpgsqlDataSource("vectors", null, builder => builder.UseVector());
-builder.AddNpgsqlDbContext<MetadataDbContext>("metadata");
+builder.AddNpgsqlDbContext<MetadataDbContext>(ServiceNames.MetadataDB);
+
 builder.AddSemanticKernel();
+builder.AddSemanticKernelMemory();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
