@@ -33,7 +33,12 @@ builder.AddProject<Projects.YouTubeGPT_Ingestion>("youtubegpt-ingestion")
     .WithReference(metadataDB)
     .WithConfiguration("Azure:AI:EmbeddingDeploymentName");
 
-builder.AddProject<Projects.YouTubeGPT_DatabaseMigrator>("youtubegpt-databasemigrator")
-    .WithReference(metadataDB);
+// We only want to launch the DB migrator when we're not in publish mode
+// otherwise we'll skip it and run DB migrations as part of the CI/CD pipeline.
+if (!builder.ExecutionContext.IsPublishMode)
+{
+    builder.AddProject<Projects.YouTubeGPT_DatabaseMigrator>("youtubegpt-databasemigrator")
+        .WithReference(metadataDB);
+}
 
 builder.Build().Run();
