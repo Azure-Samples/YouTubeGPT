@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FA12D6D0-AABC-4C6C-B4B1-131171CDD0F2}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		Directory.Packages.props = Directory.Packages.props
 		nuget.config = nuget.config
@@ -17,9 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.AppHost", "YouTu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.ServiceDefaults", "YouTubeGPT.ServiceDefaults\YouTubeGPT.ServiceDefaults.csproj", "{D7507722-2B00-466C-820D-651D3E2EC9B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouTubeGPT.Database", "YouTubeGPT.Database\YouTubeGPT.Database.csproj", "{4381150A-C08D-4D9A-8438-368E18ACC115}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.Database", "YouTubeGPT.Database\YouTubeGPT.Database.csproj", "{4381150A-C08D-4D9A-8438-368E18ACC115}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouTubeGPT.DatabaseMigrator", "YouTubeGPT.DatabaseMigrator\YouTubeGPT.DatabaseMigrator.csproj", "{74FCD13C-7101-49B1-9FDB-876141DD72FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.DatabaseMigrator", "YouTubeGPT.DatabaseMigrator\YouTubeGPT.DatabaseMigrator.csproj", "{74FCD13C-7101-49B1-9FDB-876141DD72FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
