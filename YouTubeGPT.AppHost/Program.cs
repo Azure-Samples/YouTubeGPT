@@ -48,7 +48,6 @@ builder.AddProject<Projects.YouTubeGPT_Client>("youtubegpt-client")
     .WithReference(ai)
     .WithReference(metadataDB)
     .WithReference(vectorDB)
-    .WithReference(metadataDB)
     .WithConfiguration("Azure:AI:EmbeddingDeploymentName");
 
 builder.Build().Run();

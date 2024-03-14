@@ -1,8 +1,27 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<MudStack>
+    <MudPaper>
+        <MudText Typo="@Typo.h4" Color="@Color.Primary">Welcome to YouTubeGPT</MudText>
+        <MudText Typo="@Typo.body1">This is a simple web application that uses a GPT model to query YouTube videos and give you insights.</MudText>
+    </MudPaper>
 
-Welcome to your new app.
-
+    @if (!VideosAreIndexed)
+    {
+        <MudPaper>
+            <MudText Typo="@Typo.h6">No videos have been indexed, use the management tool to index some videos.</MudText>
+        </MudPaper>
+    }
+    else
+    {
+        <MudPaper>
+            <MudText Typo="@Typo.h6">Videos have been indexed, use the search tool to query the indexed videos.</MudText>
+            <MudText Typo="@Typo.body1">The choice of channels you can ask about are @string.Join(", ", collectionInfos.Select(c => c.Title))</MudText>
+            <MudTextField Lines="5" @bind-Value="Prompt" HelperText="What do you want to know?" />
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Ask">Ask</MudButton>
+        </MudPaper>
+    }
+</MudStack>
