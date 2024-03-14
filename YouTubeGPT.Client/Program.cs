@@ -18,6 +18,7 @@ builder.AddNpgsqlDbContext<MetadataDbContext>(ServiceNames.MetadataDB);
 
 builder.AddSemanticKernel();
 builder.AddSemanticKernelMemory();
+builder.AddSemanticKernelPlugins();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

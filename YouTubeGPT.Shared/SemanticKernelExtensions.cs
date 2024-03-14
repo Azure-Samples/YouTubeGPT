@@ -23,7 +23,7 @@ public static class SemanticKernelExtensions
         {
             var client = provider.GetRequiredService<OpenAIClient>();
 
-            var chatCompletions = new AzureOpenAIChatCompletionService(builder.Configuration["Azure:AI:ChatDeploymentName"] ?? "gpt-35-turbo", client);
+            var chatCompletions = new AzureOpenAIChatCompletionService(builder.Configuration["Azure:AI:ChatDeploymentName"] ?? "gpt-4", client);
             return chatCompletions;
         });
         builder.Services.AddSingleton<IChatCompletionService>((provider) => provider.GetRequiredService<AzureOpenAIChatCompletionService>());

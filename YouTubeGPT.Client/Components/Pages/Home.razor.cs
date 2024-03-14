@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Memory;
+using Microsoft.SemanticKernel.Planning.Handlebars;
 using Microsoft.SemanticKernel.Plugins.Memory;
 using Npgsql;
+using YouTubeGPT.Client.Plugins;
 using YouTubeGPT.Ingestion;
 
 namespace YouTubeGPT.Client.Components.Pages;
@@ -16,9 +19,12 @@ public partial class Home
     public required MetadataDbContext MetadataDbContext { get; set; }
 
     [Inject]
-#pragma warning disable SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
     public required ISemanticTextMemory Memory { get; set; }
-#pragma warning restore SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning restore SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+
+    [Inject]
+    public required CollectionSelection CollectionSelectionPlugin { get; set; }
 
     private IEnumerable<CollectionInfo> collectionInfos = [];
     private bool VideosAreIndexed => collectionInfos.Any();
@@ -26,6 +32,8 @@ public partial class Home
 
     protected override async Task OnInitializedAsync()
     {
+        SetupSemanticKernel();
+
         try
         {
             var collections = await Memory.GetCollectionsAsync();
@@ -42,12 +50,23 @@ public partial class Home
                 collectionInfos = collectionInfos.Append(new CollectionInfo(channelId, metadata.Title));
             }
         }
-        catch (PostgresException ex) 
+        catch (PostgresException ex)
         // Ignore exceptions raised when the database is not yet initialized
         when (ex.SqlState == "3D000")
         {
             return;
         }
+    }
+
+    private void SetupSemanticKernel()
+    {
+#pragma warning disable SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning disable SKEXP0052 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+        Kernel.ImportPluginFromObject(new TextMemoryPlugin(Memory));
+#pragma warning restore SKEXP0052 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning restore SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+
+        Kernel.ImportPluginFromType<CollectionSelection>(nameof(CollectionSelection));
     }
 
     private async Task Ask()
@@ -57,17 +76,17 @@ public partial class Home
             return;
         }
 
-#pragma warning disable SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-#pragma warning disable SKEXP0052 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-        Kernel.ImportPluginFromObject(new TextMemoryPlugin(Memory));
-#pragma warning restore SKEXP0052 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-#pragma warning restore SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-
-        var result = await Kernel.InvokePromptAsync("{{recall $input collection=$collection}}", new()
+        var result = await Kernel.InvokeAsync(nameof(CollectionSelection), "GetCollection", new()
         {
-            { "input", Prompt },
-            { "collection", "UCvtT19MZW8dq5Wwfu6B0oxw_descriptions" }
+            { "prompt", Prompt },
+            { "collections", collectionInfos.ToDictionary(ci => ci.ChannelId, ci => ci.Title) }
         });
+
+        //var result = await Kernel.InvokePromptAsync("{{recall $input collection=$collection}}", new()
+        //{
+        //    { "input", Prompt },
+        //    { "collection", "UCvtT19MZW8dq5Wwfu6B0oxw_descriptions" }
+        //});
     }
 
     record CollectionInfo(string ChannelId, string Title);
