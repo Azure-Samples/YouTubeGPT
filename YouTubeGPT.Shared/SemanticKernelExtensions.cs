@@ -1,12 +1,9 @@
-﻿using Azure.AI.OpenAI;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.SemanticKernel.ChatCompletion;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
+using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.Postgres;
 using Microsoft.SemanticKernel.Embeddings;
 using Microsoft.SemanticKernel.Memory;
-using Microsoft.SemanticKernel.TextGeneration;
 using Npgsql;
 
 namespace YouTubeGPT.Shared;
@@ -18,19 +15,8 @@ public static class SemanticKernelExtensions
     public static IHostApplicationBuilder AddSemanticKernel(this IHostApplicationBuilder builder)
     {
         builder.AddAzureOpenAIClient(ServiceNames.AzureOpenAI);
-
-        builder.Services.AddSingleton(provider =>
-        {
-            var client = provider.GetRequiredService<OpenAIClient>();
-
-            var chatCompletions = new AzureOpenAIChatCompletionService(builder.Configuration["Azure:AI:ChatDeploymentName"] ?? "gpt-4", client);
-            return chatCompletions;
-        });
-        builder.Services.AddSingleton<IChatCompletionService>((provider) => provider.GetRequiredService<AzureOpenAIChatCompletionService>());
-        builder.Services.AddSingleton<ITextGenerationService>((provider) => provider.GetRequiredService<AzureOpenAIChatCompletionService>());
-
+        builder.Services.AddAzureOpenAIChatCompletion(builder.Configuration["Azure:AI:ChatDeploymentName"] ?? "gpt-4");
         builder.Services.AddKernel();
-
         return builder;
     }
 
@@ -38,18 +24,9 @@ public static class SemanticKernelExtensions
     {
         builder.AddKeyedNpgsqlDataSource(ServiceNames.VectorDB, null, builder => builder.UseVector());
 
-        builder.Services.AddScoped(provider =>
-        {
-            var client = provider.GetRequiredService<OpenAIClient>();
 #pragma warning disable SKEXP0011 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-#pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-            ITextEmbeddingGenerationService embeddingGenerator =
-                new AzureOpenAITextEmbeddingGenerationService(builder.Configuration["Azure:AI:EmbeddingDeploymentName"] ?? "text-embedding-ada-002", client);
-#pragma warning restore SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+        builder.Services.AddAzureOpenAITextEmbeddingGeneration(builder.Configuration["Azure:AI:EmbeddingDeploymentName"] ?? "text-embedding-ada-002");
 #pragma warning restore SKEXP0011 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-
-            return embeddingGenerator;
-        });
 
 #pragma warning disable SKEXP0032 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 #pragma warning disable SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
