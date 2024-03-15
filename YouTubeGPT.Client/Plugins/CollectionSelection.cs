@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace YouTubeGPT.Client.Plugins;
 
-public class CollectionSelection(AzureOpenAIChatCompletionService chatCompletionService)
+public class CollectionSelection(IChatCompletionService chatCompletionService)
 {
     [KernelFunction, Description("Determine the right collection to be querying for the memory request")]
     public async Task<string[]> GetCollectionAsync(
