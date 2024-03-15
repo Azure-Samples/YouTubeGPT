@@ -6,3 +6,4 @@ appsettings.*.json
 
 YouTubeGPT.AppHost/data
 *.user
+*.orig
