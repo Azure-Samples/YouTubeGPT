@@ -21,7 +21,7 @@
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.Postgres" Version="1.6.3-alpha" />
     <PackageVersion Include="Microsoft.SemanticKernel.Planners.Handlebars" Version="1.6.3-preview" />
     <PackageVersion Include="Microsoft.SemanticKernel.Plugins.Memory" Version="1.6.3-alpha" />
-    <PackageVersion Include="MudBlazor" Version="6.17.0" />
+    <PackageVersion Include="MudBlazor" Version="6.18.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
     <PackageVersion Include="YoutubeExplode" Version="6.3.13" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.7.0" />
