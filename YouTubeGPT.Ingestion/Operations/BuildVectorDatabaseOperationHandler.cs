@@ -8,9 +8,9 @@ namespace YouTubeGPT.Ingestion.Operations;
 
 public class BuildVectorDatabaseOperationHandler(
     YoutubeClient yt,
-#pragma warning disable SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
     ISemanticTextMemory memory,
-#pragma warning restore SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning restore SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
     ILogger<BuildVectorDatabaseOperationHandler> logger,
     MetadataDbContext metadataDbContext)
 {

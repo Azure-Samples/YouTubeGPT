@@ -17,10 +17,10 @@
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="8.2.0" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="8.0.0-preview.5.24171.6" />
-    <PackageVersion Include="Microsoft.SemanticKernel" Version="1.5.0" />
-    <PackageVersion Include="Microsoft.SemanticKernel.Connectors.Postgres" Version="1.5.0-alpha" />
-    <PackageVersion Include="Microsoft.SemanticKernel.Planners.Handlebars" Version="1.6.1-preview" />
-    <PackageVersion Include="Microsoft.SemanticKernel.Plugins.Memory" Version="1.5.0-alpha" />
+    <PackageVersion Include="Microsoft.SemanticKernel" Version="1.6.3" />
+    <PackageVersion Include="Microsoft.SemanticKernel.Connectors.Postgres" Version="1.6.3-alpha" />
+    <PackageVersion Include="Microsoft.SemanticKernel.Planners.Handlebars" Version="1.6.3-preview" />
+    <PackageVersion Include="Microsoft.SemanticKernel.Plugins.Memory" Version="1.6.3-alpha" />
     <PackageVersion Include="MudBlazor" Version="6.17.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
     <PackageVersion Include="YoutubeExplode" Version="6.3.13" />
