@@ -6,15 +6,12 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var ai = builder.ExecutionContext.IsPublishMode ?
     builder.AddAzureOpenAI(ServiceNames.AzureOpenAI)
-        .WithDeployment(new("gpt-35-turbo", "gpt-35-turbo", "1106"))
-        .WithDeployment(new("text-embedding-ada-002", "text-embedding-ada-002", "2")) :
+        .AddDeployment(new("gpt-35-turbo", "gpt-35-turbo", "1106"))
+        .AddDeployment(new("text-embedding-ada-002", "text-embedding-ada-002", "2")) :
     builder.AddConnectionString(ServiceNames.AzureOpenAI);
 
 var pgContainer = builder
-    .AddPostgres(
-        "postgres",
-        password: builder.Configuration["Aspire:Postgres:Password"]
-    )
+    .AddPostgres("postgres", password: builder.AddParameter("postgresPassword", true))
     .WithPgAdmin();
 
 if (builder.Environment.IsDevelopment())

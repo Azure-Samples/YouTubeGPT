@@ -3,18 +3,20 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Aspire.Azure.AI.OpenAI" Version="8.0.0-preview.5.24162.5" />
-    <PackageVersion Include="Aspire.Hosting.Azure" Version="8.0.0-preview.5.24162.5" />
-    <PackageVersion Include="Aspire.Hosting" Version="8.0.0-preview.5.24162.5" />
-    <PackageVersion Include="Aspire.Npgsql" Version="8.0.0-preview.5.24162.5" />
-    <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.5.24162.5" />
+    <PackageVersion Include="Aspire.Azure.AI.OpenAI" Version="8.0.0-preview.5.24171.6" />
+    <PackageVersion Include="Aspire.Hosting.AppHost" Version="8.0.0-preview.5.24171.6" />
+    <PackageVersion Include="Aspire.Hosting.Azure" Version="8.0.0-preview.5.24171.6" />
+    <PackageVersion Include="Aspire.Hosting" Version="8.0.0-preview.5.24170.8" />
+    <PackageVersion Include="Aspire.Hosting.Azure.CognitiveServices" Version="8.0.0-preview.5.24171.6" />
+    <PackageVersion Include="Aspire.Npgsql" Version="8.0.0-preview.5.24171.6" />
+    <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.5.24171.6" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageVersion>
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="8.2.0" />
-    <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="8.0.0-preview.5.24162.5" />
+    <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="8.0.0-preview.5.24171.6" />
     <PackageVersion Include="Microsoft.SemanticKernel" Version="1.5.0" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.Postgres" Version="1.5.0-alpha" />
     <PackageVersion Include="Microsoft.SemanticKernel.Planners.Handlebars" Version="1.6.1-preview" />
