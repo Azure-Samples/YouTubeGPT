@@ -6,12 +6,12 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var ai = builder.ExecutionContext.IsPublishMode ?
     builder.AddAzureOpenAI(ServiceNames.AzureOpenAI)
-        .AddDeployment(new("gpt-35-turbo", "gpt-35-turbo", "1106"))
-        .AddDeployment(new("text-embedding-ada-002", "text-embedding-ada-002", "2")) :
+        .AddDeployment(new(builder.Configuration["Azure:AI:ChatDeploymentName"] ?? "gpt-4", "gpt-4", "1106"))
+        .AddDeployment(new(builder.Configuration["Azure:AI:EmbeddingDeploymentName"] ?? "text-embedding-ada-002", "text-embedding-ada-002", "2")) :
     builder.AddConnectionString(ServiceNames.AzureOpenAI);
 
 var pgContainer = builder
-    .AddPostgres("postgres", password: builder.AddParameter("postgresPassword", true))
+    .AddPostgres("postgres")
     .WithPgAdmin();
 
 if (builder.Environment.IsDevelopment())
@@ -45,6 +45,7 @@ builder.AddProject<Projects.YouTubeGPT_Client>("youtubegpt-client")
     .WithReference(ai)
     .WithReference(metadataDB)
     .WithReference(vectorDB)
-    .WithConfiguration("Azure:AI:EmbeddingDeploymentName");
+    .WithConfiguration("Azure:AI:EmbeddingDeploymentName")
+    .WithConfiguration("Azure:AI:ChatDeploymentName");
 
 builder.Build().Run();
