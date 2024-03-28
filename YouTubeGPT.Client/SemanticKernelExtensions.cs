@@ -6,7 +6,7 @@ public static class SemanticKernelExtensions
 {
     public static IHostApplicationBuilder AddSemanticKernelPlugins(this IHostApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<CollectionSelection>();
+        builder.Services.AddTransient<CollectionSelection>();
 
         return builder;
     }

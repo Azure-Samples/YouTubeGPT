@@ -1,10 +1,4 @@
-using Azure.AI.OpenAI;
-using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.ChatCompletion;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
-using Microsoft.SemanticKernel.TextGeneration;
 using MudBlazor.Services;
-using Npgsql;
 using YouTubeGPT.Client;
 using YouTubeGPT.Client.Components;
 using YouTubeGPT.Ingestion;

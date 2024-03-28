@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Memory;
 using Microsoft.SemanticKernel.Planning.Handlebars;
 using Microsoft.SemanticKernel.Plugins.Memory;
 using Npgsql;
+using System.Text.Json;
 using YouTubeGPT.Client.Plugins;
 using YouTubeGPT.Ingestion;
 
@@ -66,7 +68,7 @@ public partial class Home
 #pragma warning restore SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 #pragma warning restore SKEXP0050 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
-        Kernel.ImportPluginFromType<CollectionSelection>(nameof(CollectionSelection));
+        Kernel.ImportPluginFromObject(CollectionSelectionPlugin, nameof(CollectionSelection));
     }
 
     private async Task Ask()
@@ -76,11 +78,38 @@ public partial class Home
             return;
         }
 
-        var result = await Kernel.InvokeAsync(nameof(CollectionSelection), "GetCollection", new()
+        ChatHistory history = [];
+        history.AddSystemMessage($"""
+            You are an AI Assistant that helps people find YouTube videos that are relevant to something they are wanting to learn about.
+
+            You will need to look for the right collection to access using a provided function before you can perform the memory request.
+
+            Return a summary answer to the persons enquiry, as well as links to the videos that they are interested in.
+
+            Here is a JSON key/value pair of the possible collections to extract from the prompt:
+            {JsonSerializer.Serialize(collectionInfos.ToDictionary(ci => ci.ChannelId, ci => ci.Title))}
+            """);
+
+        history.AddUserMessage(Prompt);
+
+        var chatCompletions = Kernel.GetRequiredService<IChatCompletionService>();
+
+        OpenAIPromptExecutionSettings openAIPromptExecutionSettings = new()
         {
-            { "prompt", Prompt },
-            { "collections", collectionInfos.ToDictionary(ci => ci.ChannelId, ci => ci.Title) }
-        });
+            ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
+        };
+
+        var response = await chatCompletions.GetChatMessageContentsAsync(
+            history,
+            openAIPromptExecutionSettings,
+            Kernel);
+
+
+        //var result = await Kernel.InvokeAsync(nameof(CollectionSelection), "GetCollection", new()
+        //{
+        //    { "prompt", Prompt },
+        //    { "collections", collectionInfos.ToDictionary(ci => ci.ChannelId, ci => ci.Title) }
+        //});
 
         //var result = await Kernel.InvokePromptAsync("{{recall $input collection=$collection}}", new()
         //{

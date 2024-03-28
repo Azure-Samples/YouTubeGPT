@@ -1,19 +1,26 @@
-﻿using Microsoft.SemanticKernel;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using System.ComponentModel;
+using YouTubeGPT.Ingestion;
 
 namespace YouTubeGPT.Client.Plugins;
 
-public class CollectionSelection(IChatCompletionService chatCompletionService)
+public class CollectionSelection(
+    IChatCompletionService chatCompletionService,
+    MetadataDbContext metadataDbContext)
 {
     [KernelFunction, Description("Determine the right collection to be querying for the memory request")]
     public async Task<string[]> GetCollectionAsync(
         [Description("The user prompt to find a collection in")]string prompt,
-        [Description("All known collections")]IDictionary<string, string> collections,
         CancellationToken cancellationToken = default)
     {
-        string metaprompt = $"""
+        var collections =
+            await metadataDbContext.Metadata
+            .ToDictionaryAsync(m => m.ChannelId, m => m.CollectionName, cancellationToken);
+
+    string metaprompt = $"""
             Your job is to extract the most likely Collection value from the following list that matches the User Prompt.
             If no match can be determined, randomly select an option from the Collection values.
             Only return the Collection value, nothing else.
