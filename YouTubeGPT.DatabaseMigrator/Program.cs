@@ -12,7 +12,7 @@ builder.AddNpgsqlDbContext<MetadataDbContext>(ServiceNames.MetadataDB);
 var host = builder.Build();
 
 var db = host.Services.GetService(typeof(MetadataDbContext)) as MetadataDbContext
-         ?? throw new ArgumentException();
+         ?? throw new ArgumentException(nameof(MetadataDbContext));
 
 db.Database.Migrate();
 

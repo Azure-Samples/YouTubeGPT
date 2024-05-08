@@ -11,25 +11,27 @@ public class CollectionSelection(
     IChatCompletionService chatCompletionService,
     MetadataDbContext metadataDbContext)
 {
-    [KernelFunction, Description("Determine the right collection to be querying for the memory request")]
+    [KernelFunction, Description("Look for the collection that best matches the user prompt from the provided collections.")]
     public async Task<string[]> GetCollectionAsync(
         [Description("The user prompt to find a collection in")]string prompt,
         CancellationToken cancellationToken = default)
     {
         var collections =
             await metadataDbContext.Metadata
-            .ToDictionaryAsync(m => m.ChannelId, m => m.CollectionName, cancellationToken);
+            .ToDictionaryAsync(m => m.Title, m => m.CollectionName, cancellationToken);
 
-    string metaprompt = $"""
+        ChatHistory history = [];
+        history.AddSystemMessage("""
             Your job is to extract the most likely Collection value from the following list that matches the User Prompt.
             If no match can be determined, randomly select an option from the Collection values.
             Only return the Collection value, nothing else.
+            """);
 
-            Collection:
-            - {string.Join("\n- ", collections.Values)}
-
-            User Prompt: {prompt}
-            """;
+        history.AddUserMessage($"""
+            Collections:
+            {string.Join("\n- ", collections.Keys)}
+            """);
+        history.AddUserMessage(prompt);
 
         var settings = new OpenAIPromptExecutionSettings()
         {
@@ -38,7 +40,7 @@ public class CollectionSelection(
         };
 
         var possibleCollection = await chatCompletionService.GetChatMessageContentAsync(
-            metaprompt,
+            history,
             settings,
             cancellationToken: cancellationToken);
 

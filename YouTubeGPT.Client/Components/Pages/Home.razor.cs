@@ -85,9 +85,6 @@ public partial class Home
             You will need to look for the right collection to access using a provided function before you can perform the memory request.
 
             Return a summary answer to the persons enquiry, as well as links to the videos that they are interested in.
-
-            Here is a JSON key/value pair of the possible collections to extract from the prompt:
-            {JsonSerializer.Serialize(collectionInfos.ToDictionary(ci => ci.ChannelId, ci => ci.Title))}
             """);
 
         history.AddUserMessage(Prompt);

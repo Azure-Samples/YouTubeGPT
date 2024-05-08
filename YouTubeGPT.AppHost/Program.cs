@@ -17,8 +17,8 @@ var pgContainer = builder
 if (builder.Environment.IsDevelopment())
 {
     pgContainer = pgContainer
-        .WithImage("ankane/pgvector")
-        .WithImageTag("latest")
+        .WithImage("pgvector/pgvector")
+        .WithImageTag("pg16")
         .WithBindMount("./database", "/docker-entrypoint-initdb.d")
         //.WithBindMount("./data/postgres", "/var/lib/postgresql/data")
         ;
