@@ -1,4 +1,5 @@
 using MudBlazor.Services;
+using Westwind.AspNetCore.Markdown;
 using YouTubeGPT.Client;
 using YouTubeGPT.Client.Components;
 using YouTubeGPT.Ingestion;
@@ -18,6 +19,8 @@ builder.AddSemanticKernelPlugins();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddMudServices();
+
+builder.Services.AddMarkdown();
 
 var app = builder.Build();
 

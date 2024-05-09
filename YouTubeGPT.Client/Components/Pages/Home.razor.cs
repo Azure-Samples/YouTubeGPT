@@ -32,6 +32,8 @@ public partial class Home
     private bool VideosAreIndexed => collectionInfos.Any();
     private string Prompt = "";
 
+    private string Answer = "";
+
     protected override async Task OnInitializedAsync()
     {
         SetupSemanticKernel();
@@ -78,6 +80,8 @@ public partial class Home
             return;
         }
 
+        Answer = "";
+
         ChatHistory history = [];
         history.AddSystemMessage($"""
             You are an AI Assistant that helps people find YouTube videos that are relevant to something they are wanting to learn about.
@@ -85,6 +89,8 @@ public partial class Home
             You will need to look for the right collection to access using a provided function before you can perform the memory request.
 
             Return a summary answer to the persons enquiry, as well as links to the videos that they are interested in.
+
+            Format the response as markdown.
             """);
 
         history.AddUserMessage(Prompt);
@@ -101,18 +107,15 @@ public partial class Home
             openAIPromptExecutionSettings,
             Kernel);
 
-
-        //var result = await Kernel.InvokeAsync(nameof(CollectionSelection), "GetCollection", new()
-        //{
-        //    { "prompt", Prompt },
-        //    { "collections", collectionInfos.ToDictionary(ci => ci.ChannelId, ci => ci.Title) }
-        //});
-
-        //var result = await Kernel.InvokePromptAsync("{{recall $input collection=$collection}}", new()
-        //{
-        //    { "input", Prompt },
-        //    { "collection", "UCvtT19MZW8dq5Wwfu6B0oxw_descriptions" }
-        //});
+        var r = response.FirstOrDefault();
+        if (r is not null && !string.IsNullOrEmpty(r.Content))
+        {
+            Answer = r.Content;
+        }
+        else
+        {
+            Answer = "The AI was unable to generate a response.";
+        }
     }
 
     record CollectionInfo(string ChannelId, string Title);

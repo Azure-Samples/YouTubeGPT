@@ -3,6 +3,7 @@ using System.Text.Json;
 using YoutubeExplode;
 using YoutubeExplode.Channels;
 using YouTubeGPT.Ingestion.Models;
+using YouTubeGPT.Shared;
 
 namespace YouTubeGPT.Ingestion.Operations;
 
@@ -86,7 +87,17 @@ public class BuildVectorDatabaseOperationHandler(
             var additionalMetadata = JsonSerializer.Serialize(videoMetadata);
 
             //var key1 = await memory.SaveInformationAsync($"{channel.Id}_{Constants.CaptionsCollectionSuffix}", captions, playlistVideo.Id, additionalMetadata: additionalMetadata);
-            var key2 = await memory.SaveInformationAsync($"{channel.Id}_{Constants.DescriptionsCollectionSuffix}", video.Description, video.Id, additionalMetadata: additionalMetadata);
+            string text = $"""
+                Title:
+                {video.Title}
+
+                Url:
+                {video.Url}
+
+                Description:
+                {video.Description}
+                """;
+            var key2 = await memory.SaveInformationAsync($"{channel.Id}_{Constants.DescriptionsCollectionSuffix}", text, video.Id, additionalMetadata: additionalMetadata);
 
             await Console.Out.WriteLineAsync($"Video '{video.Title}' has been saved to memory.");
             logger.LogInformation("Video {VideoTitle}({VideoId}) has been saved to memory", video.Title, video.Id);

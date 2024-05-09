@@ -4,6 +4,7 @@ using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using System.ComponentModel;
 using YouTubeGPT.Ingestion;
+using YouTubeGPT.Shared;
 
 namespace YouTubeGPT.Client.Plugins;
 
@@ -47,6 +48,12 @@ public class CollectionSelection(
         // There has to be a better way to do this
         string selected = ((Azure.AI.OpenAI.ChatResponseMessage)possibleCollection.InnerContent!).Content;
 
-        return [selected];
+        if (collections.TryGetValue(selected, out string? value))
+        {
+            return [$"{value}_{Constants.DescriptionsCollectionSuffix}"];
+        }
+
+        // If no match can be determined, randomly select an option from the Collection values
+        return [$"{collections.First().Value}_{Constants.DescriptionsCollectionSuffix}"];
     }
 }
