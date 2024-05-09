@@ -2,35 +2,91 @@
 @using Westwind.AspNetCore.Markdown
 @rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Chat</PageTitle>
 
-<MudStack>
-    <MudPaper>
-        <MudText Typo="@Typo.h4" Color="@Color.Primary">Welcome to YouTubeGPT</MudText>
-        <MudText Typo="@Typo.body1">This is a simple web application that uses a GPT model to query YouTube videos and give you insights.</MudText>
-    </MudPaper>
+<HeadContent>
+    <style>
+        .mud-typography-body1 a {
+            color: var(--mud-palette-primary);
+        }
+    </style>
+</HeadContent>
 
-    @if (!VideosAreIndexed)
-    {
-        <MudPaper>
-            <MudText Typo="@Typo.h6">No videos have been indexed, use the management tool to index some videos.</MudText>
-        </MudPaper>
-    }
-    else
-    {
-        <MudPaper>
-            <MudText Typo="@Typo.h6">Videos have been indexed, use the search tool to query the indexed videos.</MudText>
-            <MudText Typo="@Typo.body1">The choice of channels you can ask about are @string.Join(", ", collectionInfos.Select(c => c.Title))</MudText>
-            <MudTextField Lines="5" @bind-Value="Prompt" HelperText="What do you want to know?" />
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Ask">Ask</MudButton>
-        </MudPaper>
-    }
 
-    @if (!string.IsNullOrEmpty(Answer))
-    {
-        <MudPaper>
-            <MudText Typo="@Typo.h6">Answer</MudText>
-            <MudText Typo="@Typo.body1">@((MarkupString)Markdown.Parse(Answer))</MudText>
-        </MudPaper>
-    }
-</MudStack>
+<MudGrid Justify="Justify.Center">
+    <MudItem id="answers" xs="12" Class="overflow-x-auto">
+        <MudStack Reverse="@IsReversed" Spacing="12">
+            @foreach (var ((question, askedOn), answer) in _questionAndAnswerMap)
+            {
+                <MudStack Justify="Justify.Center" AlignItems="AlignItems.Start" Spacing="4">
+                    <MudBadge Origin="Origin.TopLeft" Overlap="true" Color="Color.Secondary"
+                              Icon="@Icons.Material.Filled.QuestionMark" Class="d-flex align-self-end">
+                        <MudPaper Class="pa-6 d-flex flex-column" Elevation="3">
+                            <MudText Typo="Typo.body1" Align="Align.End">
+                                @question
+                            </MudText>
+                            <MudText Typo="Typo.caption" Align="Align.End" Color="Color.Secondary">
+                                @($"Asked at {askedOn:h:mm:ss tt} on {askedOn:dd/M/yy}")
+                            </MudText>
+                        </MudPaper>
+                    </MudBadge>
+                    <div class="ten-twelves">
+                        @if (answer is null)
+                        {
+                            <MudBadge Origin="Origin.TopLeft" Overlap="true" Color="Color.Secondary"
+                                      Icon="@Icons.Material.Filled.Lightbulb" Class="full-width">
+                                <MudPaper Class="pa-6" Elevation="3">
+                                    <Loading />
+                                </MudPaper>
+                            </MudBadge>
+                        }
+                        else
+                        {
+                            <MudBadge Origin="Origin.TopLeft" Overlap="true" Color="Color.Secondary"
+                                      Icon="@Icons.Material.Filled.AutoAwesome"
+                                      Style="display:inherit">
+                                <Answer ProvidedAnswer="@answer" />
+                            </MudBadge>
+                        }
+                    </div>
+                </MudStack>
+            }
+        </MudStack>
+    </MudItem>
+    <MudItem xs="12" Class="rounded">
+        <MudGrid>
+            <MudItem xs="12" lg="10">
+                <VoiceTextInput @bind-Value="Prompt" Label="Prompt"
+                                Icon="@Icons.Material.Filled.QuestionAnswer"
+                                Placeholder="Enter OpenAI + Azure Search prompt"
+                                HelperText="Use Shift + Enter for new lines."
+                                Disabled=@_isReceivingResponse
+                                OnEnterKeyPressed="OnAskQuestionAsync" />
+            </MudItem>
+            <MudItem xs="0" lg="2" Class="d-flex align-self-center">
+                <MudGrid Justify="Justify.Center">
+                    <MudItem xs="9" Class="pa-2">
+                        <MudFab Color="Color.Secondary" Size="Size.Large"
+                                StartIcon=@Icons.Material.Filled.Send Class="full-width"
+                                Label="Chat" aria-label="Ask question button."
+                                OnClick="@OnAskQuestionAsync"
+                                Disabled=@(_isReceivingResponse || string.IsNullOrWhiteSpace(Prompt)) />
+                    </MudItem>
+                    <MudItem xs="3" Class="pa-2">
+                        <MudTooltip Arrow="true" Text="Clear chat history" Placement="Placement.Top">
+                            <MudFab Color="Color.Primary" Size="Size.Medium"
+                                    StartIcon=@Icons.Material.Filled.DeleteForever
+                                    aria-label="Clear chat."
+                                    OnClick="@OnClearChat" Disabled=@(_isReceivingResponse || _questionAndAnswerMap is { Count: 0 }) />
+                        </MudTooltip>
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+    <MudScrollToTop Selector="#answers"
+                    VisibleCssClass="visible absolute"
+                    HiddenCssClass="invisible">
+        <MudFab Color="Color.Primary" IconSize="Size.Large" StartIcon="@Icons.Material.Filled.ArrowUpward" />
+    </MudScrollToTop>
+</MudGrid>

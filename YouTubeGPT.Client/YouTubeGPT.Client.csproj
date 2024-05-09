@@ -20,4 +20,8 @@
     
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Chat\" />
+  </ItemGroup>
+
 </Project>

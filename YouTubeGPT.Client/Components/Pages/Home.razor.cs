@@ -1,13 +1,9 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Memory;
-using Microsoft.SemanticKernel.Planning.Handlebars;
 using Microsoft.SemanticKernel.Plugins.Memory;
-using Npgsql;
-using System.Text.Json;
+using YouTubeGPT.Client.Models;
 using YouTubeGPT.Client.Plugins;
 using YouTubeGPT.Ingestion;
 
@@ -22,65 +18,41 @@ public partial class Home
 
     [Inject]
 #pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-    public required ISemanticTextMemory Memory { get; set; }
+    public required TextMemoryPlugin MemoryPlugin { get; set; }
 #pragma warning restore SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
     [Inject]
     public required CollectionSelection CollectionSelectionPlugin { get; set; }
 
-    private IEnumerable<CollectionInfo> collectionInfos = [];
-    private bool VideosAreIndexed => collectionInfos.Any();
+    [CascadingParameter(Name = nameof(IsReversed))]
+    public required bool IsReversed { get; set; }
+
     private string Prompt = "";
 
-    private string Answer = "";
+    private readonly Dictionary<UserQuestion, string?> _questionAndAnswerMap = [];
 
-    protected override async Task OnInitializedAsync()
+    private bool _isReceivingResponse = false;
+
+    protected override void OnInitialized()
     {
         SetupSemanticKernel();
-
-        try
-        {
-            var collections = await Memory.GetCollectionsAsync();
-
-            foreach (var collection in collections)
-            {
-                var channelId = collection.Split('_')[0];
-                if (collectionInfos.Any(collectionInfos => collectionInfos.ChannelId == channelId))
-                {
-                    continue;
-                }
-
-                var metadata = await MetadataDbContext.Metadata.FirstAsync(md => md.ChannelId == channelId);
-                collectionInfos = collectionInfos.Append(new CollectionInfo(channelId, metadata.Title));
-            }
-        }
-        catch (PostgresException ex)
-        // Ignore exceptions raised when the database is not yet initialized
-        when (ex.SqlState == "3D000")
-        {
-            return;
-        }
     }
 
     private void SetupSemanticKernel()
     {
-#pragma warning disable SKEXP0050 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-#pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-        Kernel.ImportPluginFromObject(new TextMemoryPlugin(Memory));
-#pragma warning restore SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-#pragma warning restore SKEXP0050 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+        Kernel.ImportPluginFromObject(MemoryPlugin);
 
         Kernel.ImportPluginFromObject(CollectionSelectionPlugin, nameof(CollectionSelection));
     }
 
-    private async Task Ask()
+    private async Task OnAskQuestionAsync()
     {
         if (string.IsNullOrEmpty(Prompt))
         {
             return;
         }
 
-        Answer = "";
+        _isReceivingResponse = true;
 
         ChatHistory history = [];
         history.AddSystemMessage($"""
@@ -93,7 +65,9 @@ public partial class Home
             Format the response as markdown.
             """);
 
-        history.AddUserMessage(Prompt);
+        UserQuestion userQuestion = new(Prompt, DateTime.Now);
+        history.AddUserMessage(userQuestion.Question);
+        _questionAndAnswerMap.Add(userQuestion, null);
 
         var chatCompletions = Kernel.GetRequiredService<IChatCompletionService>();
 
@@ -110,12 +84,21 @@ public partial class Home
         var r = response.FirstOrDefault();
         if (r is not null && !string.IsNullOrEmpty(r.Content))
         {
-            Answer = r.Content;
+            _questionAndAnswerMap[userQuestion] = r.Content;
         }
         else
         {
-            Answer = "The AI was unable to generate a response.";
+            _questionAndAnswerMap[userQuestion] = "The AI was unable to generate a response.";
         }
+
+        Prompt = "";
+        _isReceivingResponse = false;
+    }
+
+    private void OnClearChat()
+    {
+        Prompt = "";
+        _questionAndAnswerMap.Clear();
     }
 
     record CollectionInfo(string ChannelId, string Title);
