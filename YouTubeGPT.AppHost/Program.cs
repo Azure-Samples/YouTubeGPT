@@ -5,10 +5,10 @@ using YouTubeGPT.Shared;
 var builder = DistributedApplication.CreateBuilder(args);
 
 var ai = builder.ExecutionContext.IsPublishMode ?
-    builder.AddAzureOpenAI(ServiceNames.AzureOpenAI)
+    builder.AddAzureOpenAI(ServiceNames.OpenAI)
         .AddDeployment(new(builder.Configuration["Azure:AI:ChatDeploymentName"] ?? "gpt-4", "gpt-4", "1106"))
-        .AddDeployment(new(builder.Configuration["Azure:AI:EmbeddingDeploymentName"] ?? "text-embedding-ada-002", "text-embedding-ada-002", "2")) :
-    builder.AddConnectionString(ServiceNames.AzureOpenAI);
+        .AddDeployment(new(builder.Configuration["Azure:AI:EmbeddingDeploymentName"] ?? "text-embedding-ada-003-small", "text-embedding-ada-003-small", "3")) :
+    builder.AddConnectionString(ServiceNames.OpenAI);
 
 var pgContainer = builder
     .AddPostgres("postgres")

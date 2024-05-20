@@ -3,5 +3,5 @@ public static class ServiceNames
 {
     public const string VectorDB = "vectors";
     public const string MetadataDB = "metadata";
-    public const string AzureOpenAI = "AzureOpenAI";
+    public const string OpenAI = "OpenAI";
 }
