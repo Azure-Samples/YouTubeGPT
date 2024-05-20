@@ -7,7 +7,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 var ai = builder.ExecutionContext.IsPublishMode ?
     builder.AddAzureOpenAI(ServiceNames.OpenAI)
         .AddDeployment(new(builder.Configuration["Azure:AI:ChatDeploymentName"] ?? "gpt-4", "gpt-4", "1106"))
-        .AddDeployment(new(builder.Configuration["Azure:AI:EmbeddingDeploymentName"] ?? "text-embedding-ada-003-small", "text-embedding-ada-003-small", "3")) :
+        .AddDeployment(new(builder.Configuration["Azure:AI:EmbeddingDeploymentName"] ?? "text-embedding-3-small", "text-embedding-3-small", "3")) :
     builder.AddConnectionString(ServiceNames.OpenAI);
 
 var pgContainer = builder

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using YouTubeGPT.Ingestion.Operations;
 
 namespace YouTubeGPT.Ingestion.Components.Pages;
-public partial class BuildIndex
+public partial class Home
 {
     BuildIndexModel model = new();
     private int progress = 0;
@@ -39,5 +39,8 @@ public partial class BuildIndex
         [Required]
         [Range(1, 100)]
         public int MaxVideos { get; set; } = 10;
+        [Required]
+        [Range(1, 100)]
+        public int MinDuration { get; set; } = 5;
     }
 }

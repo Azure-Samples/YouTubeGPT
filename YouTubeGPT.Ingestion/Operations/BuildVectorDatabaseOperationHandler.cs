@@ -15,7 +15,7 @@ public class BuildVectorDatabaseOperationHandler(
     ILogger<BuildVectorDatabaseOperationHandler> logger,
     MetadataDbContext metadataDbContext)
 {
-    public async Task Handle(string channelUrl, IProgress<int> progress, int maxVideos = 10)
+    public async Task Handle(string channelUrl, IProgress<int> progress, int maxVideos = 10, TimeSpan? minDuration = null)
     {
         Channel channel;
 
@@ -54,6 +54,12 @@ public class BuildVectorDatabaseOperationHandler(
             if (playlistVideo.Duration is null)
             {
                 logger.LogInformation("Skipping '{Title}' ({Url}) as there is no duration, so it's probably upcoming", playlistVideo.Title, playlistVideo.Url);
+                continue;
+            }
+
+            if (minDuration is not null && playlistVideo.Duration < minDuration)
+            {
+                logger.LogInformation("Skipping '{Title}' ({Url}) as the duration is below the specified threshold.", playlistVideo.Title, playlistVideo.Url);
                 continue;
             }
 
