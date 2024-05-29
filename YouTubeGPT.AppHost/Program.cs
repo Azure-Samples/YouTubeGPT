@@ -20,7 +20,10 @@ if (builder.Environment.IsDevelopment())
         .WithImage("pgvector/pgvector")
         .WithImageTag("pg16")
         .WithBindMount("./database", "/docker-entrypoint-initdb.d")
-        //.WithBindMount("./data/postgres", "/var/lib/postgresql/data")
+        // Uncomment this if you want to persist the data across app restarts. But note, if you persist the data
+        // you'll need to set a password for the database, rather than using an auto-generated one.
+        // $> dotnet user-secrets set "Parameters:postgres:password" "your-password"
+        //.WithDataVolume()
         ;
 }
 
