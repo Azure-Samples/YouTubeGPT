@@ -11,7 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		Directory.Packages.props = Directory.Packages.props
-		nuget.config = nuget.config
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.AppHost", "YouTubeGPT.AppHost\YouTubeGPT.AppHost.csproj", "{BDF2435E-E3AB-430B-B40F-1895C5CCEB14}"
@@ -24,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.DatabaseMigrator
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.Client", "YouTubeGPT.Client\YouTubeGPT.Client.csproj", "{553C211E-900A-4D30-A89E-FB5EE1A2D2A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouTubeGPT.Shared", "YouTubeGPT.Shared\YouTubeGPT.Shared.csproj", "{397F5801-0093-47CB-92C0-3F2C5F6CA1B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.Shared", "YouTubeGPT.Shared\YouTubeGPT.Shared.csproj", "{397F5801-0093-47CB-92C0-3F2C5F6CA1B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
