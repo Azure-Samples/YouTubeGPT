@@ -10,13 +10,12 @@ var ai = builder.ExecutionContext.IsPublishMode ?
         .AddDeployment(new(builder.Configuration["Azure:AI:EmbeddingDeploymentName"] ?? "text-embedding-3-small", "text-embedding-3-small", "3")) :
     builder.AddConnectionString(ServiceNames.OpenAI);
 
-var pgContainer = builder
-    .AddPostgres("postgres")
-    .WithPgAdmin();
+var postgresServer = builder.AddPostgres("postgres");
 
 if (builder.Environment.IsDevelopment())
 {
-    pgContainer = pgContainer
+    postgresServer = postgresServer
+        .WithPgAdmin()
         .WithImage("pgvector/pgvector")
         .WithImageTag("pg16")
         .WithBindMount("./database", "/docker-entrypoint-initdb.d")
@@ -27,8 +26,13 @@ if (builder.Environment.IsDevelopment())
         ;
 }
 
-var vectorDB = pgContainer.AddDatabase(ServiceNames.VectorDB);
-var metadataDB = pgContainer.AddDatabase(ServiceNames.MetadataDB);
+if (builder.ExecutionContext.IsPublishMode)
+{
+    postgresServer.AsAzurePostgresFlexibleServerWithVectorSupport();
+}
+
+var vectorDB = postgresServer.AddDatabase(ServiceNames.VectorDB);
+var metadataDB = postgresServer.AddDatabase(ServiceNames.MetadataDB);
 
 builder.AddProject<Projects.YouTubeGPT_Ingestion>("youtubegpt-ingestion")
     .WithReference(ai)
