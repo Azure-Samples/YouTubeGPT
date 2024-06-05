@@ -14,7 +14,7 @@ public static class SemanticKernelExtensions
     public static IHostApplicationBuilder AddSemanticKernel(this IHostApplicationBuilder builder)
     {
         builder.AddAzureOpenAIClient(ServiceNames.OpenAI);
-        builder.Services.AddAzureOpenAIChatCompletion(builder.Configuration["Azure:AI:ChatDeploymentName"] ?? "gpt-4");
+        builder.Services.AddAzureOpenAIChatCompletion(builder.Configuration["Azure:AI:ChatDeploymentName"] ?? "gpt-4o");
         builder.Services.AddKernel();
         return builder;
     }
