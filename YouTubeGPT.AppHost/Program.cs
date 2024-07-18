@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Hosting;
 using YouTubeGPT.AppHost;
 using YouTubeGPT.Shared;
 
@@ -10,29 +9,8 @@ var ai = builder.ExecutionContext.IsPublishMode ?
         .AddDeployment(new(builder.Configuration["Azure:AI:EmbeddingDeploymentName"] ?? "text-embedding-3-small", "text-embedding-3-small", "1")) :
     builder.AddConnectionString(ServiceNames.OpenAI);
 
-var postgresServer = builder.AddPostgres("postgres");
-
-if (builder.Environment.IsDevelopment())
-{
-    postgresServer = postgresServer
-        .WithPgAdmin()
-        .WithImage("pgvector/pgvector")
-        .WithImageTag("pg16")
-        .WithBindMount("./database", "/docker-entrypoint-initdb.d")
-        // Uncomment this if you want to persist the data across app restarts. But note, if you persist the data
-        // you'll need to set a password for the database, rather than using an auto-generated one.
-        // $> dotnet user-secrets set "Parameters:postgres:password" "your-password"
-        //.WithDataVolume()
-        ;
-}
-
-if (builder.ExecutionContext.IsPublishMode)
-{
-    postgresServer.AsAzurePostgresFlexibleServerWithVectorSupport();
-}
-
-var vectorDB = postgresServer.AddDatabase(ServiceNames.VectorDB);
-var metadataDB = postgresServer.AddDatabase(ServiceNames.MetadataDB);
+var vectorDB = builder.AddConnectionString(ServiceNames.VectorDB);
+var metadataDB = builder.AddConnectionString(ServiceNames.MetadataDB);
 
 builder.AddProject<Projects.YouTubeGPT_Ingestion>("youtubegpt-ingestion")
     .WithReference(ai)

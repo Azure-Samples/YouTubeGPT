@@ -9,7 +9,7 @@ var builder = Host.CreateApplicationBuilder(args);
 
 builder.AddServiceDefaults();
 
-builder.AddNpgsqlDbContext<MetadataDbContext>(ServiceNames.MetadataDB);
+builder.AddSqlServerDbContext<MetadataDbContext>(ServiceNames.MetadataDB);
 
 var host = builder.Build();
 
@@ -33,7 +33,7 @@ while (!isDbReady && tryCount++ < retryCount)
     }
     catch (Exception ex)
     {
-        logger.LogWarning("Failed to open databse connection {Exception}", ex);
+        logger.LogWarning("Failed to open database connection {Exception}", ex);
         await Task.Delay(1000);
     }
 }

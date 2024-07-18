@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-builder.AddNpgsqlDbContext<MetadataDbContext>(ServiceNames.MetadataDB);
+builder.AddSqlServerDbContext<MetadataDbContext>(ServiceNames.MetadataDB);
 
 builder.AddSemanticKernel();
 builder.AddSemanticKernelMemory();
