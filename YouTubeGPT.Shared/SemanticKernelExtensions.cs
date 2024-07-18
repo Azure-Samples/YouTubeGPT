@@ -27,7 +27,7 @@ public static class SemanticKernelExtensions
 
 #pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 #pragma warning disable SKEXP0020 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-        builder.Services.AddSingleton<IMemoryStore, SqlServerMemoryStore>(provider =>
+        builder.Services.AddScoped<IMemoryStore, SqlServerMemoryStore>(provider =>
         {
             var dataSource = provider.GetRequiredKeyedService<SqlConnection>(ServiceNames.VectorDB);
 
@@ -37,7 +37,7 @@ public static class SemanticKernelExtensions
 #pragma warning restore SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 #pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-        builder.Services.AddSingleton<ISemanticTextMemory, SemanticTextMemory>();
+        builder.Services.AddScoped<ISemanticTextMemory, SemanticTextMemory>();
 #pragma warning restore SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
         return builder;
