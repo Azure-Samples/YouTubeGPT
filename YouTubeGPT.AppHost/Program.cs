@@ -9,8 +9,11 @@ var ai = builder.ExecutionContext.IsPublishMode ?
         .AddDeployment(new(builder.Configuration["Azure:AI:EmbeddingDeploymentName"] ?? "text-embedding-3-small", "text-embedding-3-small", "1")) :
     builder.AddConnectionString(ServiceNames.OpenAI);
 
-var vectorDB = builder.AddConnectionString(ServiceNames.VectorDB);
-var metadataDB = builder.AddConnectionString(ServiceNames.MetadataDB);
+var databaseServer = builder.AddSqlServer("sql")
+    .AsAzureSqlDatabase();
+
+var vectorDB = databaseServer.AddDatabase(ServiceNames.VectorDB);
+var metadataDB = databaseServer.AddDatabase(ServiceNames.MetadataDB);
 
 builder.AddProject<Projects.YouTubeGPT_Ingestion>("youtubegpt-ingestion")
     .WithReference(ai)
