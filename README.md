@@ -30,7 +30,7 @@ The application is split into two parts, a data ingestion service and a web appl
    cd YouTubeGPT.AppHost
 
    # Azure OpenAI Service
-   dotnet user-secrets set "ConnectionStrings:OpenAI" "Endpoint=https://<your-endpoint>.cognitiveservices.azure.com/;ApiKey=<your-key>"
+   dotnet user-secrets set "ConnectionStrings:OpenAI" "Endpoint=https://<your-endpoint>.cognitiveservices.azure.com/;Key=<your-key>;"
 
    # OpenAI API Key
    dotnet user-secrets set "ConnectionStrings:OpenAI" "<your key>"
