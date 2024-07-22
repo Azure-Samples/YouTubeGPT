@@ -12,8 +12,10 @@ The application is split into two parts, a data ingestion service and a web appl
 - .NEW Aspire 8
 - Access to Azure OpenAI Service or an OpenAI API key
   - Models required:
-    - `text-embedding-ada-003-small`
-    - `gpt-3.5-turbo` or `gpt-4`
+    - Default: `text-embedding-ada-3-small`
+      - Override with `dotnet user-secrets set "Azure:AI:EmbeddingDeploymentName" "<your model deployment name>"`
+    - Default: `gpt-4o`
+      - Override with `dotnet user-secrets set "Azure:AI:ChatDeploymentName" "<your model deployment name>"`
 - Docker
 
 ## Setup
@@ -30,7 +32,7 @@ The application is split into two parts, a data ingestion service and a web appl
    cd YouTubeGPT.AppHost
 
    # Azure OpenAI Service
-   dotnet user-secrets set "ConnectionStrings:OpenAI" "Endpoint=https://<your-endpoint>.cognitiveservices.azure.com/;ApiKey=<your-key>"
+   dotnet user-secrets set "ConnectionStrings:OpenAI" "Endpoint=https://<your-endpoint>.cognitiveservices.azure.com/;Key=<your-key>"
 
    # OpenAI API Key
    dotnet user-secrets set "ConnectionStrings:OpenAI" "<your key>"
