@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace YouTubeGPT.Ingestion.Migrations
+namespace YouTubeGPT.Database.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -14,11 +14,12 @@ namespace YouTubeGPT.Ingestion.Migrations
                 name: "Metadata",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false),
-                    CollectionName = table.Column<string>(type: "text", nullable: false),
-                    ChannelId = table.Column<string>(type: "text", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    ChannelUrl = table.Column<string>(type: "text", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CollectionName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ChannelId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ChannelUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -1,6 +1,7 @@
 ﻿using YoutubeExplode.Common;
 
 namespace YouTubeGPT.Ingestion.Models;
+
 public class VideoMetadata
 {
     public string Title { get; set; } = null!;
