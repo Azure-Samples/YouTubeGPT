@@ -1,4 +1,5 @@
 ﻿namespace YouTubeGPT.Ingestion.Models;
+
 public class MemoryMetadata
 {
     public int Id { get; set; }
