@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34705.270
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.Ingestion", "YouTubeGPT.Ingestion\YouTubeGPT.Ingestion.csproj", "{7C87C573-5CD8-4934-838D-38D25F2A9043}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.Ingestion", "src\YouTubeGPT.Ingestion\YouTubeGPT.Ingestion.csproj", "{7C87C573-5CD8-4934-838D-38D25F2A9043}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FA12D6D0-AABC-4C6C-B4B1-131171CDD0F2}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,17 +13,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.AppHost", "YouTubeGPT.AppHost\YouTubeGPT.AppHost.csproj", "{BDF2435E-E3AB-430B-B40F-1895C5CCEB14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.AppHost", "src\YouTubeGPT.AppHost\YouTubeGPT.AppHost.csproj", "{BDF2435E-E3AB-430B-B40F-1895C5CCEB14}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.ServiceDefaults", "YouTubeGPT.ServiceDefaults\YouTubeGPT.ServiceDefaults.csproj", "{D7507722-2B00-466C-820D-651D3E2EC9B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.ServiceDefaults", "src\YouTubeGPT.ServiceDefaults\YouTubeGPT.ServiceDefaults.csproj", "{D7507722-2B00-466C-820D-651D3E2EC9B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.Database", "YouTubeGPT.Database\YouTubeGPT.Database.csproj", "{4381150A-C08D-4D9A-8438-368E18ACC115}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.Database", "src\YouTubeGPT.Database\YouTubeGPT.Database.csproj", "{4381150A-C08D-4D9A-8438-368E18ACC115}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.DatabaseMigrator", "YouTubeGPT.DatabaseMigrator\YouTubeGPT.DatabaseMigrator.csproj", "{74FCD13C-7101-49B1-9FDB-876141DD72FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.DatabaseMigrator", "src\YouTubeGPT.DatabaseMigrator\YouTubeGPT.DatabaseMigrator.csproj", "{74FCD13C-7101-49B1-9FDB-876141DD72FC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.Client", "YouTubeGPT.Client\YouTubeGPT.Client.csproj", "{553C211E-900A-4D30-A89E-FB5EE1A2D2A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.Client", "src\YouTubeGPT.Client\YouTubeGPT.Client.csproj", "{553C211E-900A-4D30-A89E-FB5EE1A2D2A0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.Shared", "YouTubeGPT.Shared\YouTubeGPT.Shared.csproj", "{397F5801-0093-47CB-92C0-3F2C5F6CA1B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.Shared", "src\YouTubeGPT.Shared\YouTubeGPT.Shared.csproj", "{397F5801-0093-47CB-92C0-3F2C5F6CA1B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
