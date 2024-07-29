@@ -11,6 +11,8 @@
     <PackageReference Include="Aspire.Microsoft.Data.SqlClient" />
     <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" />
     <PackageReference Include="Microsoft.SemanticKernel" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.Postgres" />
     <PackageReference Include="Microsoft.SemanticKernel.Plugins.Memory" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.SqlServer" />
   </ItemGroup>

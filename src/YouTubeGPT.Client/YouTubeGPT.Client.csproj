@@ -16,6 +16,8 @@
     <PackageReference Include="MudBlazor" />
     <PackageReference Include="westwind.aspnetcore.markdown" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" />
+    
   </ItemGroup>
 
   <ItemGroup>
