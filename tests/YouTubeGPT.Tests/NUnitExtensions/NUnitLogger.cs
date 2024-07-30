@@ -13,8 +13,6 @@ internal class NUnitLogger(string name, TextWriter writer, TimeProvider time) : 
     [ThreadStatic]
     private static StringBuilder? _logBuilder;
 
-    private readonly string _timestampFormat;
-
     public bool IncludeScopes { get; set; }
 
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull
