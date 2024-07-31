@@ -88,7 +88,7 @@ internal class NUnitLogger(string name, TextWriter writer, TimeProvider time) : 
         // [{timestamp}] {logLevelString}{message}
         logBuilder.Insert(0, logLevelString);
         logBuilder.Insert(0, "] ");
-        logBuilder.Insert(0, time.GetLocalNow().ToString(_timestampFormat, CultureInfo.CurrentCulture));
+        logBuilder.Insert(0, time.GetLocalNow().ToString("t", CultureInfo.CurrentCulture));
         logBuilder.Insert(0, '[');
 
         string line = logBuilder.ToString();

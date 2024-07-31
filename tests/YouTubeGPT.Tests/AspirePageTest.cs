@@ -1,7 +1,9 @@
-﻿using YouTubeGPT.Tests.NUnitExtensions;
+﻿using Microsoft.Playwright.NUnit;
+using YouTubeGPT.Tests.NUnitExtensions;
 
 namespace YouTubeGPT.Tests;
-public abstract class AspireTest
+
+public abstract class AspirePageTest : PageTest
 {
     protected DistributedApplication app = null!;
     protected ResourceNotificationService resourceNotificationService = null!;
