@@ -23,7 +23,7 @@
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="$(SemanticKernelVersion)" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.Postgres" Version="$(SemanticKernelVersion)-alpha" />
     <PackageVersion Include="Microsoft.SemanticKernel.Plugins.Memory" Version="$(SemanticKernelVersion)-alpha" />
-    <PackageVersion Include="MudBlazor" Version="6.19.1" />
+    <PackageVersion Include="MudBlazor" Version="7.4.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
     <PackageVersion Include="westwind.aspnetcore.markdown" Version="3.17.0" />
     <PackageVersion Include="YoutubeExplode" Version="6.3.16" />
