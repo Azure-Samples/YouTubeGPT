@@ -32,7 +32,7 @@ jobs:
         run: pwsh tests/YouTubeGPT.Tests/bin/${{ env.DOTNET_CONFIGURATION }}/net8.0/playwright.ps1 install --with-deps
 
       - name: Test
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test --no-build --verbosity normal --configuration ${{ env.DOTNET_CONFIGURATION }}
 
       - name: Upload Playwright traces
         uses: actions/upload-artifact@v3
