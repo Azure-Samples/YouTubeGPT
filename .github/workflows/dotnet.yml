@@ -10,6 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      DOTNET_CONFIGURATION: Release
+
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
@@ -18,9 +21,23 @@ jobs:
           dotnet-version: 8.0.x
       - name: Install Aspire workload
         run: dotnet workload install aspire
+
       - name: Restore dependencies
         run: dotnet restore
+
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build --no-restore --configuration ${{ env.DOTNET_CONFIGURATION }}
+
+      - name: Ensure browsers are installed
+        run: pwsh tests/YouTubeGPT.Tests/bin/${{ env.DOTNET_CONFIGURATION }}/net8.0/playwright.ps1 install --with-deps
+
       - name: Test
         run: dotnet test --no-build --verbosity normal
+
+      - name: Upload Playwright traces
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: playwright-traces
+          path: |
+            ${{ github.workspace }}tests/YouTubeGPT.Tests/bin/${{ env.DOTNET_CONFIGURATION }}/net8.0/playwright-traces/**
