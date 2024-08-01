@@ -18,16 +18,15 @@
         </MudCardContent>
 
         <MudCardActions>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="BuildIndexAsync" Disabled="showProgress">Build Index</MudButton>
             @if (showProgress)
             {
-                <div>
-                    <MudProgressLinear Color="Color.Primary" Value="progress" Class="my-7">
-                        <MudText Typo="Typo.subtitle1" Color="Color.Dark">
-                            <strong>@progress%</strong>
-                        </MudText>
-                    </MudProgressLinear>
-                </div>
+                <MudProgressLinear Color="Color.Primary" Value="progress" Class="my-7" data-testid="process">
+                    <MudText Typo="Typo.body1">Building index...</MudText>
+                </MudProgressLinear>
+            }
+            else
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="BuildIndexAsync" Disabled="showProgress">Build Index</MudButton>
             }
         </MudCardActions>
     </MudCard>

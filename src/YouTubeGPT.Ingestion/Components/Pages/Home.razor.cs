@@ -1,16 +1,23 @@
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using System.ComponentModel.DataAnnotations;
 using YouTubeGPT.Ingestion.Operations;
 
 namespace YouTubeGPT.Ingestion.Components.Pages;
 public partial class Home
 {
-    BuildIndexModel model = new();
+    private readonly BuildIndexModel model = new();
     private int progress = 0;
     private bool showProgress = false;
 
     [Inject]
     public required BuildVectorDatabaseOperationHandler Operation { get; set; }
+
+    [Inject]
+    public required ISnackbar Snackbar { get; set; }
+
+    [Inject]
+    public required ILogger<Home> Logger { get; set; }
 
     private async Task BuildIndexAsync()
     {
@@ -23,10 +30,12 @@ public partial class Home
                 progress = p;
                 StateHasChanged();
             }), model.MaxVideos);
+
+            Snackbar.Add("Index built successfully", Severity.Success);
         }
         catch (Exception ex)
         {
-            await Console.Out.WriteLineAsync(ex.ToString());
+            Logger.LogError(ex, "Failed to build index");
         }
 
         showProgress = false;

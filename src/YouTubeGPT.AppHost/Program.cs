@@ -10,7 +10,7 @@ var ai = builder.ExecutionContext.IsPublishMode ?
         .AddDeployment(new(builder.Configuration["Azure:AI:EmbeddingDeploymentName"] ?? "text-embedding-3-small", "text-embedding-3-small", "1")) :
     builder.AddConnectionString(ServiceNames.OpenAI);
 
-var postgresServer = builder.AddPostgres("postgres");
+var postgresServer = builder.AddPostgres(ServiceNames.Postgres);
 
 if (builder.Environment.IsDevelopment())
 {
@@ -34,7 +34,7 @@ if (builder.ExecutionContext.IsPublishMode)
 var vectorDB = postgresServer.AddDatabase(ServiceNames.VectorDB);
 var metadataDB = postgresServer.AddDatabase(ServiceNames.MetadataDB);
 
-builder.AddProject<Projects.YouTubeGPT_Ingestion>("youtubegpt-ingestion")
+builder.AddProject<Projects.YouTubeGPT_Ingestion>(ServiceNames.YouTubeGPTIngestion)
     .WithReference(ai)
     .WithReference(vectorDB)
     .WithReference(metadataDB)
@@ -45,11 +45,11 @@ builder.AddProject<Projects.YouTubeGPT_Ingestion>("youtubegpt-ingestion")
 // otherwise we'll skip it and run DB migrations as part of the CI/CD pipeline.
 if (!builder.ExecutionContext.IsPublishMode)
 {
-    builder.AddProject<Projects.YouTubeGPT_DatabaseMigrator>("youtubegpt-databasemigrator")
+    builder.AddProject<Projects.YouTubeGPT_DatabaseMigrator>(ServiceNames.YouTubeGPTDatabaseMigrator)
         .WithReference(metadataDB);
 }
 
-builder.AddProject<Projects.YouTubeGPT_Client>("youtubegpt-client")
+builder.AddProject<Projects.YouTubeGPT_Client>(ServiceNames.YouTubeGPTClient)
     .WithReference(ai)
     .WithReference(metadataDB)
     .WithReference(vectorDB)

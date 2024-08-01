@@ -25,6 +25,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.Client", "src\Yo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTubeGPT.Shared", "src\YouTubeGPT.Shared\YouTubeGPT.Shared.csproj", "{397F5801-0093-47CB-92C0-3F2C5F6CA1B0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4CDC8D67-3E62-495F-B393-0B9657D68DF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouTubeGPT.Tests", "tests\YouTubeGPT.Tests\YouTubeGPT.Tests.csproj", "{5524B6DE-AC09-4601-8622-3B1CA36512E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,11 +63,18 @@ Global
 		{397F5801-0093-47CB-92C0-3F2C5F6CA1B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{397F5801-0093-47CB-92C0-3F2C5F6CA1B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{397F5801-0093-47CB-92C0-3F2C5F6CA1B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5524B6DE-AC09-4601-8622-3B1CA36512E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5524B6DE-AC09-4601-8622-3B1CA36512E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5524B6DE-AC09-4601-8622-3B1CA36512E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5524B6DE-AC09-4601-8622-3B1CA36512E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64316A04-D124-43AF-8BAD-B21E6F0CD408}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5524B6DE-AC09-4601-8622-3B1CA36512E4} = {4CDC8D67-3E62-495F-B393-0B9657D68DF5}
 	EndGlobalSection
 EndGlobal

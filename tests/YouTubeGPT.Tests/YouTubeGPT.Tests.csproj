@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.Testing" />
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Microsoft.Playwright" />
+    <PackageReference Include="Microsoft.Playwright.NUnit" />
+    <PackageReference Include="Microsoft.Playwright.testadapter" />
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="NUnit.Analyzers" />
+    <PackageReference Include="NUnit3TestAdapter" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\YouTubeGPT.AppHost\YouTubeGPT.AppHost.csproj" />
+    <ProjectReference Include="..\..\src\YouTubeGPT.Shared\YouTubeGPT.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="System.Net" />
+    <Using Include="Microsoft.Extensions.DependencyInjection" />
+    <Using Include="Aspire.Hosting.ApplicationModel" />
+    <Using Include="Aspire.Hosting.Testing" />
+    <Using Include="NUnit.Framework" />
+  </ItemGroup>
+
+</Project>
