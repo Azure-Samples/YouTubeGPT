@@ -7,8 +7,9 @@ public class IngestionTests : AspirePageTest
     [Test]
     public async Task CanIngestData()
     {
-        var httpClient = app.CreateHttpClient(ServiceNames.YouTubeGPTIngestion);
+        await resourceNotificationService.WaitForResourceAsync(ServiceNames.YouTubeGPTIngestion, KnownResourceStates.Running).WaitAsync(TimeSpan.FromSeconds(30));
 
+        var httpClient = app.CreateHttpClient(ServiceNames.YouTubeGPTIngestion);
         await Page.GotoAsync(httpClient.BaseAddress!.ToString());
 
         // Enter the data into the page and submit form
