@@ -40,4 +40,4 @@ jobs:
         with:
           name: playwright-traces
           path: |
-            ${{ github.workspace }}tests/YouTubeGPT.Tests/bin/${{ env.DOTNET_CONFIGURATION }}/net8.0/playwright-traces/**
+            ${{ github.workspace }}/tests/YouTubeGPT.Tests/bin/${{ env.DOTNET_CONFIGURATION }}/net8.0/playwright-traces/**
