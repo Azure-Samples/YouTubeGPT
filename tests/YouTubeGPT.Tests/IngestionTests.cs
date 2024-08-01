@@ -1,5 +1,4 @@
 ﻿using Microsoft.Playwright;
-using System.Text.RegularExpressions;
 using YouTubeGPT.Shared;
 
 namespace YouTubeGPT.Tests;
@@ -22,7 +21,7 @@ public class IngestionTests : AspirePageTest
 
         // Wait for the progress bar to appear
         await Page.WaitForSelectorAsync("[aria-live='polite']", new PageWaitForSelectorOptions { State = WaitForSelectorState.Visible });
-        await Expect(Page.GetByTestId("progress").First).ToBeVisibleAsync();
+        await Expect(Page.GetByTestId("process")).ToBeVisibleAsync();
 
         // Wait for the alert to appear indicating that the data was ingested
         await Page.WaitForSelectorAsync("[role='alert']", new PageWaitForSelectorOptions { State = WaitForSelectorState.Visible });
