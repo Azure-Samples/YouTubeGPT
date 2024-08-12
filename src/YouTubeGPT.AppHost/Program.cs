@@ -8,7 +8,9 @@ var ai = builder.ExecutionContext.IsPublishMode ?
     builder.AddAzureOpenAI(ServiceNames.OpenAI)
         .AddDeployment(new(builder.Configuration["Azure:AI:ChatDeploymentName"] ?? "gpt-4o", "gpt-4o", "2024-05-13"))
         .AddDeployment(new(builder.Configuration["Azure:AI:EmbeddingDeploymentName"] ?? "text-embedding-3-small", "text-embedding-3-small", "1")) :
-    builder.AddConnectionString(ServiceNames.OpenAI);
+    bool.TryParse(builder.Configuration["UseLocalModel"], out bool c) && c == true ?
+        builder.AddOllamazure(ServiceNames.OpenAI) :
+        builder.AddConnectionString(ServiceNames.OpenAI);
 
 var postgresServer = builder.AddPostgres(ServiceNames.Postgres);
 

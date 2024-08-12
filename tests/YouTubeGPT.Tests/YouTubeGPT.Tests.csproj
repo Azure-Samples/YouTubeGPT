@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <UserSecretsId>a4579d86-459f-4429-a5e9-e6f7ba70617e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\YouTubeGPT.AppHost\YouTubeGPT.AppHost.csproj" />
+    <ProjectReference Include="..\..\src\YouTubeGPT.Database\YouTubeGPT.Database.csproj" />
     <ProjectReference Include="..\..\src\YouTubeGPT.Shared\YouTubeGPT.Shared.csproj" />
   </ItemGroup>
 
