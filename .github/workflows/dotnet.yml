@@ -32,7 +32,7 @@ jobs:
         run: pwsh tests/YouTubeGPT.Tests/bin/${{ env.DOTNET_CONFIGURATION }}/net8.0/playwright.ps1 install --with-deps
 
       - name: Setup local env
-        run: dotnet user-secrets set "UseLocalAuth" "true" --project tests/YouTubeGPT.Test/YouTubeGPT.Test.csproj
+        run: dotnet user-secrets set "UseLocalAuth" "true" --project tests/YouTubeGPT.Tests/YouTubeGPT.Tests.csproj
 
       - name: Test
         run: dotnet test --no-build --verbosity normal --configuration ${{ env.DOTNET_CONFIGURATION }}
