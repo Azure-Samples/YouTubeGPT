@@ -31,14 +31,14 @@ jobs:
       - name: Ensure browsers are installed
         run: pwsh tests/YouTubeGPT.Tests/bin/${{ env.DOTNET_CONFIGURATION }}/net8.0/playwright.ps1 install --with-deps
 
-      - name: Setup local env
-        run: dotnet user-secrets set "UseLocalModel" "true" --project tests/YouTubeGPT.Tests/YouTubeGPT.Tests.csproj
+      - name: Setup local models
+        run: dotnet user-secrets set "UseLocalModel" "true" --project src/YouTubeGPT.AppHost/YouTubeGPT.AppHost.csproj
 
       - name: Test
         run: dotnet test --no-build --verbosity normal --configuration ${{ env.DOTNET_CONFIGURATION }}
 
       - name: Upload Playwright traces
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: playwright-traces
