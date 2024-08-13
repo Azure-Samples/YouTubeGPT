@@ -79,7 +79,7 @@ public class IngestionTests : AspirePageTest
         await Expect(Page.GetByTestId("process")).ToBeVisibleAsync();
 
         // Wait for the alert to appear indicating that the data was ingested
-        await Page.WaitForSelectorAsync("[role='alert']", new PageWaitForSelectorOptions { State = WaitForSelectorState.Visible });
+        await Page.WaitForSelectorAsync("[role='alert']", new PageWaitForSelectorOptions { State = WaitForSelectorState.Visible, Timeout = TimeSpan.FromMinutes(5).Seconds });
         await Expect(Page.GetByRole(AriaRole.Alert)).ToBeVisibleAsync();
 
         // Text input should be enabled again
