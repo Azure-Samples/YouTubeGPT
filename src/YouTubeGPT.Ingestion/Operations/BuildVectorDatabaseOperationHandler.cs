@@ -75,15 +75,6 @@ public class BuildVectorDatabaseOperationHandler(
                 continue;
             }
 
-            logger.LogInformation("Downloading transcript for '{Title}' ({Id})", playlistVideo.Title, playlistVideo.Id);
-            var trackManifest = await yt.Videos.ClosedCaptions.GetManifestAsync(playlistVideo.Id);
-            var track = trackManifest.TryGetByLanguage("en");
-            if (track is null)
-            {
-                logger.LogInformation("Video {Id} doesn't have an English transcript", playlistVideo.Id);
-                continue;
-            }
-
             logger.LogInformation("Downloading caption for '{Title}'", playlistVideo.Title);
 
             var video = await yt.Videos.GetAsync(playlistVideo.Id);
@@ -100,6 +91,14 @@ public class BuildVectorDatabaseOperationHandler(
             };
 
             // skip captions until slicing is implemented
+            // logger.LogInformation("Downloading transcript for '{Title}' ({Id})", playlistVideo.Title, playlistVideo.Id);
+            // var trackManifest = await yt.Videos.ClosedCaptions.GetManifestAsync(playlistVideo.Id);
+            // var track = trackManifest.TryGetByLanguage("en");
+            // if (track is null)
+            // {
+            //     logger.LogInformation("Video {Id} doesn't have an English transcript", playlistVideo.Id);
+            //     continue;
+            // }
             // await IndexVideoCaptions(channel, videoMetadata, video.Id, track);
             await IndexVideoMetadata(channel, videoMetadata, video.Id, playlistVideo);
 
