@@ -42,4 +42,6 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
+app.Logger.LogInformation("Client app is up and running.");
+
 app.Run();
