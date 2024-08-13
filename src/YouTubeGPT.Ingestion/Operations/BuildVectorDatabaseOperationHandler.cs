@@ -21,10 +21,22 @@ public class BuildVectorDatabaseOperationHandler(
     public async Task Handle(string channelUrl, IProgress<int> progress, int maxVideos = 10, TimeSpan? minDuration = null)
     {
         Channel channel;
+        IAsyncEnumerable<PlaylistVideo> uploads;
 
         try
         {
-            channel = await yt.Channels.GetAsync(channelUrl);
+            if (channelUrl.Contains("/playlist?list="))
+            {
+                var playlistId = PlaylistId.Parse(channelUrl);
+                var playlist = await yt.Playlists.GetAsync(playlistId);
+                uploads = yt.Playlists.GetVideosAsync(playlistId);
+                channel = await yt.Channels.GetAsync(playlist.Author!.ChannelId);
+            }
+            else
+            {
+                channel = await yt.Channels.GetAsync(channelUrl);
+                uploads = yt.Channels.GetUploadsAsync(channel.Id);
+            }
         }
         catch (ArgumentException)
         {
@@ -33,6 +45,7 @@ public class BuildVectorDatabaseOperationHandler(
             try
             {
                 channel = await yt.Channels.GetByHandleAsync(channelUrl);
+                uploads = yt.Channels.GetUploadsAsync(channel.Id);
             }
             catch (ArgumentException)
             {
@@ -40,8 +53,6 @@ public class BuildVectorDatabaseOperationHandler(
                 return;
             }
         }
-
-        var uploads = yt.Channels.GetUploadsAsync(channel.Id);
 
         int videoCount = 0;
 

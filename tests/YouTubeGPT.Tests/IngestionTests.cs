@@ -8,6 +8,9 @@ using YouTubeGPT.Shared;
 namespace YouTubeGPT.Tests;
 public class IngestionTests : AspirePageTest
 {
+    // The .NET at Build 2024 playlist URL
+    private const string YouTubeUrl = "https://www.youtube.com/playlist?list=PLdo4fOcmZ0oUZz7p8H1HsQjgv5tRRIvAS";
+
     [Test]
     public async Task CanIngestData()
     {
@@ -68,7 +71,7 @@ public class IngestionTests : AspirePageTest
 
         // Enter the data into the page and submit form
         await Page.GetByLabel("Channel URL").ClickAsync();
-        await Page.GetByLabel("Channel URL").FillAsync("https://youtube.com/@dotnet");
+        await Page.GetByLabel("Channel URL").FillAsync(YouTubeUrl);
         await Page.GetByRole(AriaRole.Button, new() { Name = "Build Index" }).ClickAsync();
 
         // Text input should be disabled
