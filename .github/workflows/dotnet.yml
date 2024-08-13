@@ -19,8 +19,16 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+      - uses: actions/setup-node@v4
+        name: Setup Node.js
+        with:
+          node-version: "22.x"
+
       - name: Install Aspire workload
         run: dotnet workload install aspire
+
+      - name: Install Ollamazure
+        run: npm install -g ollamazure
 
       - name: Restore dependencies
         run: dotnet restore
