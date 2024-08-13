@@ -1,4 +1,5 @@
-﻿using Microsoft.Playwright.NUnit;
+﻿using Microsoft.Playwright;
+using Microsoft.Playwright.NUnit;
 using NUnit.Framework.Interfaces;
 using YouTubeGPT.Tests.NUnitExtensions;
 
@@ -8,6 +9,13 @@ public abstract class AspirePageTest : PageTest
 {
     protected DistributedApplication app = null!;
     protected ResourceNotificationService resourceNotificationService = null!;
+
+    public override BrowserNewContextOptions ContextOptions() => new()
+    {
+        Locale = "en-US",
+        ColorScheme = ColorScheme.Light,
+        IgnoreHTTPSErrors = true
+    };
 
     [SetUp]
     public async Task Setup()
