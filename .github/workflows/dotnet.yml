@@ -24,6 +24,22 @@ jobs:
         with:
           node-version: "22.x"
 
+      - uses: actions/cache@v4
+        name: Cache NuGet packages
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('Directory.Packages.props') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - uses: actions/cache@v4
+        name: Cache Docker volumes for ollamazure
+        with:
+          path: /var/lib/docker/volumes
+          key: ${{ runner.os }}-docker-${{ hashFiles('Directory.Docker.props') }}
+          restore-keys: |
+            ${{ runner.os }}-docker-
+
       - name: Install Aspire workload
         run: dotnet workload install aspire
 
