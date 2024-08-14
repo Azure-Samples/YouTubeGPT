@@ -1,1 +1,1 @@
-﻿[assembly: NonParallelizable]
+﻿//[assembly: NonParallelizable]
