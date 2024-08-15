@@ -26,7 +26,7 @@
             }
             else
             {
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="BuildIndexAsync" Disabled="showProgress">Build Index</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="BuildIndexAsync" Disabled="(showProgress || string.IsNullOrEmpty(model.ChannelUrl))">Build Index</MudButton>
             }
         </MudCardActions>
     </MudCard>

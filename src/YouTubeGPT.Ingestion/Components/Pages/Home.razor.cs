@@ -21,6 +21,12 @@ public partial class Home
 
     private async Task BuildIndexAsync()
     {
+        if (string.IsNullOrEmpty(model.ChannelUrl))
+        {
+            Snackbar.Add("No URL entered for videos", Severity.Error);
+            return;
+        }
+
         try
         {
             progress = 0;
@@ -44,7 +50,7 @@ public partial class Home
     class BuildIndexModel
     {
         [Required]
-        public string ChannelUrl { get; set; } = null!;
+        public string? ChannelUrl { get; set; }
         [Required]
         [Range(1, 100)]
         public int MaxVideos { get; set; } = 10;
