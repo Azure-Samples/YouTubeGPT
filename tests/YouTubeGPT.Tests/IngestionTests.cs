@@ -72,6 +72,7 @@ public class IngestionTests : AspirePageTest
         // Enter the data into the page and submit form
         await Page.GetByLabel("Channel URL").ClickAsync();
         await Page.GetByLabel("Channel URL").FillAsync(YouTubeUrl);
+        await Page.GetByLabel("Channel URL").BlurAsync();
         await Page.GetByRole(AriaRole.Button, new() { Name = "Build Index" }).ClickAsync();
 
         // Text input should be disabled
