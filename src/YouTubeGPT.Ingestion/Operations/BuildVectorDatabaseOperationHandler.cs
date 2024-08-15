@@ -100,6 +100,7 @@ public class BuildVectorDatabaseOperationHandler(
             //     continue;
             // }
             // await IndexVideoCaptions(channel, videoMetadata, video.Id, track);
+
             await IndexVideoMetadata(channel, videoMetadata, video.Id, playlistVideo);
 
             // only increment the video count if we've successfully saved the video to memory
@@ -151,7 +152,7 @@ public class BuildVectorDatabaseOperationHandler(
         _ = await memory.SaveInformationAsync($"{channel.Id}_{Constants.DescriptionsCollectionSuffix}", text, id, additionalMetadata: additionalMetadata);
 
         logger.LogDebug("{VideoId} indexed with prompt:", id);
-        logger.LogDebug(text);
+        logger.LogDebug("{Text}", text);
 
         logger.LogInformation("Video {VideoTitle}({VideoId}) description has been saved to memory.", videoMetadata.Title, id);
     }
