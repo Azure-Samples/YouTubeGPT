@@ -67,7 +67,7 @@ public class IngestionTests : AspirePageTest
         await Page.GotoAsync(httpClient.BaseAddress!.ToString());
 
         // Ensuring that Blazor properly loads, sometimes there seems to be a "flash" after it loads that resets controls
-        // await Task.Delay(TimeSpan.FromSeconds(2));
+        await Task.Delay(TimeSpan.FromSeconds(2));
 
         // Enter the data into the page and submit form
         await Page.GetByLabel("Channel URL").ClickAsync();
