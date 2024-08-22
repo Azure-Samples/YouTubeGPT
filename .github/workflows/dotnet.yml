@@ -64,7 +64,23 @@ jobs:
         run: dotnet user-secrets set "UseLocalModel" "true" --project src/YouTubeGPT.AppHost/YouTubeGPT.AppHost.csproj
 
       - name: Test
-        run: dotnet test --no-build --verbosity normal --configuration ${{ env.DOTNET_CONFIGURATION }}
+        run: dotnet test --no-build --verbosity normal --configuration ${{ env.DOTNET_CONFIGURATION }} --collect "XPlat Code Coverage" --results-directory test-results --logger trx
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: .NET Tests
+          path: test-results/*.trx
+          reporter: dotnet-trx
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-results
+          path: |
+            ${{ github.workspace }}/test-results/**
 
       - name: Upload Playwright traces
         uses: actions/upload-artifact@v4
