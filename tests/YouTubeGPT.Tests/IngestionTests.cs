@@ -65,6 +65,7 @@ public class IngestionTests : AspirePageTest
 
         var httpClient = app.CreateHttpClient(ServiceNames.YouTubeGPTIngestion);
         await Page.GotoAsync(httpClient.BaseAddress!.ToString());
+        await Page.WaitForURLAsync(httpClient.BaseAddress!.ToString(), new PageWaitForURLOptions { WaitUntil = WaitUntilState.NetworkIdle });
 
         // Ensuring that Blazor properly loads, sometimes there seems to be a "flash" after it loads that resets controls
         //await Task.Delay(TimeSpan.FromSeconds(2));
