@@ -9,7 +9,7 @@ namespace YouTubeGPT.Shared;
 
 public static class SemanticKernelExtensions
 {
-    private const int VectorSize = 1536;
+    private const int VectorSize = 384;
 
     public static IHostApplicationBuilder AddSemanticKernel(this IHostApplicationBuilder builder)
     {
@@ -24,7 +24,7 @@ public static class SemanticKernelExtensions
         builder.AddKeyedNpgsqlDataSource(ServiceNames.VectorDB, null, builder => builder.UseVector());
 
 #pragma warning disable SKEXP0010 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-        builder.Services.AddAzureOpenAITextEmbeddingGeneration(builder.Configuration["Azure:AI:EmbeddingDeploymentName"] ?? "text-embedding-3-small");
+        builder.Services.AddAzureOpenAITextEmbeddingGeneration(builder.Configuration["Azure:AI:EmbeddingDeploymentName"] ?? "text-embedding-3-small", dimensions: VectorSize);
 #pragma warning restore SKEXP0010 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 #pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.

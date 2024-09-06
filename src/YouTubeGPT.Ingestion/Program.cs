@@ -43,4 +43,6 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
+app.Logger.LogInformation("Ingestion Service is up and running.");
+
 app.Run();
