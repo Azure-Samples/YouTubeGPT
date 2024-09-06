@@ -46,12 +46,12 @@ public class CollectionSelection(
             cancellationToken: cancellationToken);
 
         // There has to be a better way to do this
-        string selected = ((Azure.AI.OpenAI.ChatResponseMessage)possibleCollection.InnerContent!).Content;
+        //string selected = (possibleCollection.InnerContent!).Content;
 
-        if (collections.TryGetValue(selected, out string? value))
-        {
-            return [$"{value}_{Constants.DescriptionsCollectionSuffix}"];
-        }
+        //if (collections.TryGetValue(selected, out string? value))
+        //{
+        //    return [$"{value}_{Constants.DescriptionsCollectionSuffix}"];
+        //}
 
         // If no match can be determined, randomly select an option from the Collection values
         return [$"{collections.First().Value}_{Constants.DescriptionsCollectionSuffix}"];

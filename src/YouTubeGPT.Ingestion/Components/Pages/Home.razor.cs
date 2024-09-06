@@ -19,6 +19,9 @@ public partial class Home
     [Inject]
     public required ILogger<Home> Logger { get; set; }
 
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+
     private async Task BuildIndexAsync()
     {
         if (string.IsNullOrEmpty(model.ChannelUrl))
