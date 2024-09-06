@@ -70,6 +70,9 @@ public class IngestionTests : AspirePageTest
         // Ensuring that Blazor properly loads, sometimes there seems to be a "flash" after it loads that resets controls
         //await Task.Delay(TimeSpan.FromSeconds(2));
 
+        // Wait for Blazor interactive initalisation to complete
+        await Expect(Page.GetByLabel("Channel URL")).ToBeEnabledAsync(new() {  Timeout = TimeSpan.FromMinutes(1).Seconds });
+
         // Enter the data into the page and submit form
         await Page.GetByLabel("Channel URL").ClickAsync();
         await Page.GetByLabel("Channel URL").FillAsync(YouTubeUrl);

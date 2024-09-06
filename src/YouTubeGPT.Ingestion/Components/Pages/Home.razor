@@ -10,7 +10,7 @@
                 <MudForm>
                     @if(HttpContext is not null)
                     {
-                        @("interactive")<MudTextField Label="Channel URL" @bind-Value="model.ChannelUrl" For="() => model.ChannelUrl" Disabled="showProgress" data-rendered-interactive />
+                        <MudTextField Label="Channel URL" @bind-Value="model.ChannelUrl" For="() => model.ChannelUrl" Disabled="true" />
                     }
                     else
                     {
