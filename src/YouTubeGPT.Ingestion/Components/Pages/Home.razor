@@ -8,7 +8,14 @@
         <MudCardContent>
             <EditForm Model="@model">
                 <MudForm>
-                    <MudTextField Label="Channel URL" @bind-Value="model.ChannelUrl" For="() => model.ChannelUrl" Disabled="showProgress" />
+                    @if(HttpContext is not null)
+                    {
+                        @("interactive")<MudTextField Label="Channel URL" @bind-Value="model.ChannelUrl" For="() => model.ChannelUrl" Disabled="showProgress" data-rendered-interactive />
+                    }
+                    else
+                    {
+                        <MudTextField Label="Channel URL" @bind-Value="model.ChannelUrl" For="() => model.ChannelUrl" Disabled="showProgress" />
+                    }
 
                     <MudTextField Label="Max video count" @bind-Value="model.MaxVideos" For="() => model.MaxVideos" Disabled="showProgress" />
 
