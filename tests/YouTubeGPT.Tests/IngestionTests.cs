@@ -71,7 +71,7 @@ public class IngestionTests : AspirePageTest
         //await Task.Delay(TimeSpan.FromSeconds(2));
 
         // Wait for Blazor interactive initalisation to complete
-        await Expect(Page.GetByLabel("Channel URL")).ToBeEnabledAsync(new() {  Timeout = TimeSpan.FromMinutes(1).Seconds });
+        await Expect(Page.GetByLabel("Channel URL")).ToBeEnabledAsync();
 
         // Enter the data into the page and submit form
         await Page.GetByLabel("Channel URL").ClickAsync();
