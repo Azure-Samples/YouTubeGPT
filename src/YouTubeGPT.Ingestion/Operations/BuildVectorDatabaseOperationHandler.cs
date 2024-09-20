@@ -110,7 +110,7 @@ public class BuildVectorDatabaseOperationHandler(
 
             // only increment the video count if we've successfully saved the video to memory
             videoCount++;
-            progress.Report(6 / 10 * 100);
+            progress.Report((int)Math.Round(videoCount / (double)maxVideos * 100));
         }
 
         progress.Report(100);

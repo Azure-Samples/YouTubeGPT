@@ -11,7 +11,7 @@
     <PackageReference Include="Aspire.Npgsql" />
     <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
     <PackageReference Include="Microsoft.SemanticKernel" />
-    <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureOpenAI" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.Postgres" />
     <PackageReference Include="Microsoft.SemanticKernel.Plugins.Memory" />
   </ItemGroup>
