@@ -1,14 +1,15 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
-<MudDialogProvider />
-<MudSnackbarProvider />
+<MudThemeProvider @rendermode="InteractiveServer" />
+<MudPopoverProvider @rendermode="InteractiveServer" />
+<MudDialogProvider @rendermode="InteractiveServer" />
+<MudSnackbarProvider @rendermode="InteractiveServer" />
 
 <MudLayout>
     <MudAppBar Elevation="0">
         <MudSpacer />
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit"
-                       Href="https://github.com/aaronpowell/YouTubeGPT/" Target="_blank" />
+                       Href="https://github.com/azure-samples/YouTubeGPT/" Target="_blank" />
     </MudAppBar>
     <MudDrawer Open="true" Elevation="1">
         <MudDrawerHeader>

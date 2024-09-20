@@ -29,22 +29,22 @@ while (!isDbReady && tryCount++ < retryCount)
     {
         connection.Open();
         isDbReady = true;
-        logger.LogInformation("Database connection opened successfully");
+        logger.LogInformation("Database connection opened successfully.");
     }
     catch (Exception ex)
     {
-        logger.LogWarning("Failed to open databse connection {Exception}", ex);
+        logger.LogWarning("Failed to open database connection {Exception}.", ex);
         await Task.Delay(1000);
     }
 }
 
 if (!isDbReady)
 {
-    logger.LogError("Failed to open database connection after {RetryCount} retries", retryCount);
+    logger.LogError("Failed to open database connection after {RetryCount} retries.", retryCount);
     return;
 }
 
 db.Database.Migrate();
-logger.LogInformation("Database migration completed successfully");
+logger.LogInformation("Database migration completed successfully.");
 
 host.Run();
