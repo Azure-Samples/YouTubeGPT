@@ -2,6 +2,7 @@
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using OpenAI.Chat;
 using System.ComponentModel;
 using YouTubeGPT.Ingestion;
 using YouTubeGPT.Shared;
@@ -14,7 +15,7 @@ public class CollectionSelection(
 {
     [KernelFunction, Description("Look for the collection that best matches the user prompt from the provided collections.")]
     public async Task<string[]> GetCollectionAsync(
-        [Description("The user prompt to find a collection in")]string prompt,
+        [Description("The user prompt to find a collection in")] string prompt,
         CancellationToken cancellationToken = default)
     {
         var collections =
@@ -46,12 +47,15 @@ public class CollectionSelection(
             cancellationToken: cancellationToken);
 
         // There has to be a better way to do this
-        //string selected = ((Azure.AI.OpenAI.ChatResponseMessage)possibleCollection.InnerContent!).Content;
+        if (possibleCollection.InnerContent is ChatCompletion completion)
+        {
+            string? selected = completion.Content.FirstOrDefault()?.Text;
 
-        //if (collections.TryGetValue(selected, out string? value))
-        //{
-        //    return [$"{value}_{Constants.DescriptionsCollectionSuffix}"];
-        //}
+            if (selected is not null && collections.TryGetValue(selected, out string? value))
+            {
+                return [$"{value}_{Constants.DescriptionsCollectionSuffix}"];
+            }
+        }
 
         // If no match can be determined, randomly select an option from the Collection values
         return [$"{collections.First().Value}_{Constants.DescriptionsCollectionSuffix}"];
