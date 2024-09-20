@@ -2,6 +2,7 @@
 using System.Text.Json;
 using YoutubeExplode;
 using YoutubeExplode.Channels;
+using YoutubeExplode.Playlists;
 using YouTubeGPT.Ingestion.Models;
 using YouTubeGPT.Shared;
 
@@ -18,29 +19,38 @@ public class BuildVectorDatabaseOperationHandler(
     public async Task Handle(string channelUrl, IProgress<int> progress, int maxVideos = 10, TimeSpan? minDuration = null)
     {
         Channel channel;
+        IAsyncEnumerable<PlaylistVideo> uploads;
 
         try
         {
-            channel = await yt.Channels.GetAsync(channelUrl);
+            if (channelUrl.Contains("/playlist?list="))
+            {
+                var playlistId = PlaylistId.Parse(channelUrl);
+                var playlist = await yt.Playlists.GetAsync(playlistId);
+                uploads = yt.Playlists.GetVideosAsync(playlistId);
+                channel = await yt.Channels.GetAsync(playlist.Author!.ChannelId);
+            }
+            else
+            {
+                channel = await yt.Channels.GetAsync(channelUrl);
+                uploads = yt.Channels.GetUploadsAsync(channel.Id);
+            }
         }
         catch (ArgumentException)
         {
-            logger.LogWarning("Failed to parse {ChannelUrl} as a ChannelId, trying it as a handle", channelUrl);
+            logger.LogWarning("Failed to parse {ChannelUrl} as a ChannelId, trying it as a handle.", channelUrl);
 
             try
             {
                 channel = await yt.Channels.GetByHandleAsync(channelUrl);
+                uploads = yt.Channels.GetUploadsAsync(channel.Id);
             }
             catch (ArgumentException)
             {
-                logger.LogError("Failed to parse {ChannelUrl} as a ChannelHandle, aborting.", channelUrl);
-
-                await Console.Out.WriteLineAsync("The URL provided is not in channel ID or name format. Please use one of these formats.");
+                logger.LogError("The URL {ChannelUrl} is not in channel ID or name format. Please use one of these formats.", channelUrl);
                 return;
             }
         }
-
-        var uploads = yt.Channels.GetUploadsAsync(channel.Id);
 
         int videoCount = 0;
 
@@ -63,50 +73,23 @@ public class BuildVectorDatabaseOperationHandler(
                 continue;
             }
 
-            logger.LogInformation("Downloading transcript for '{Title}' ({Id})", playlistVideo.Title, playlistVideo.Id);
-            var trackManifest = await yt.Videos.ClosedCaptions.GetManifestAsync(playlistVideo.Id);
-            var track = trackManifest.TryGetByLanguage("en");
-            if (track is null)
-            {
-                logger.LogInformation("Video {Id} doesn't have an English transcript", playlistVideo.Id);
-                continue;
-            }
+            //logger.LogInformation("Downloading transcript for '{Title}' ({Id})", playlistVideo.Title, playlistVideo.Id);
+            //var trackManifest = await yt.Videos.ClosedCaptions.GetManifestAsync(playlistVideo.Id);
+            //var track = trackManifest.TryGetByLanguage("en");
+            //if (track is null)
+            //{
+            //    logger.LogInformation("Video {Id} doesn't have an English transcript", playlistVideo.Id);
+            //    continue;
+            //}
 
-            await Console.Out.WriteLineAsync($"Downloading caption for '{playlistVideo.Title}'");
-            using var textWriter = new StringWriter();
-            await yt.Videos.ClosedCaptions.WriteToAsync(track, textWriter);
+            //await Console.Out.WriteLineAsync($"Downloading caption for '{playlistVideo.Title}'");
+            //using var textWriter = new StringWriter();
+            //await yt.Videos.ClosedCaptions.WriteToAsync(track, textWriter);
 
-            var captions = textWriter.ToString();
-            var video = await yt.Videos.GetAsync(playlistVideo.Id);
-
-            var videoMetadata = new VideoMetadata()
-            {
-                Description = video.Description,
-                Title = video.Title,
-                Duration = video.Duration,
-                Author = video.Author,
-                Url = video.Url,
-                UploadDate = video.UploadDate,
-                Keywords = video.Keywords
-            };
-
-            var additionalMetadata = JsonSerializer.Serialize(videoMetadata);
-
+            //var captions = textWriter.ToString();
             //var key1 = await memory.SaveInformationAsync($"{channel.Id}_{Constants.CaptionsCollectionSuffix}", captions, playlistVideo.Id, additionalMetadata: additionalMetadata);
-            string text = $"""
-                Title:
-                {video.Title}
 
-                Url:
-                {video.Url}
-
-                Description:
-                {video.Description}
-                """;
-            var key2 = await memory.SaveInformationAsync($"{channel.Id}_{Constants.DescriptionsCollectionSuffix}", text, video.Id, additionalMetadata: additionalMetadata);
-
-            await Console.Out.WriteLineAsync($"Video '{video.Title}' has been saved to memory.");
-            logger.LogInformation("Video {VideoTitle}({VideoId}) has been saved to memory", video.Title, video.Id);
+            await SaveVideoDescription(channel, playlistVideo);
 
             // only increment the video count if we've successfully saved the video to memory
             videoCount++;
@@ -126,5 +109,37 @@ public class BuildVectorDatabaseOperationHandler(
             });
             await metadataDbContext.SaveChangesAsync();
         }
+    }
+
+    private async Task SaveVideoDescription(Channel channel, PlaylistVideo playlistVideo)
+    {
+        var video = await yt.Videos.GetAsync(playlistVideo.Id);
+
+        var videoMetadata = new VideoMetadata()
+        {
+            Description = video.Description,
+            Title = video.Title,
+            Duration = video.Duration,
+            Author = video.Author,
+            Url = video.Url,
+            UploadDate = video.UploadDate,
+            Keywords = video.Keywords
+        };
+
+        var additionalMetadata = JsonSerializer.Serialize(videoMetadata);
+
+        string text = $"""
+                Title:
+                {video.Title}
+
+                Url:
+                {video.Url}
+
+                Description:
+                {video.Description}
+                """;
+        var key = await memory.SaveInformationAsync($"{channel.Id}_{Constants.DescriptionsCollectionSuffix}", text, video.Id, additionalMetadata: additionalMetadata);
+
+        logger.LogInformation("Video {VideoTitle}({VideoId}) has been saved to memory with key {Key}.", video.Title, video.Id, key);
     }
 }
