@@ -18,9 +18,12 @@ public class CollectionSelection(
         [Description("The user prompt to find a collection in")] string prompt,
         CancellationToken cancellationToken = default)
     {
-        var collections =
-            await metadataDbContext.Metadata
-            .ToDictionaryAsync(m => m.Title, m => m.CollectionName, cancellationToken);
+        var metadata =
+            await metadataDbContext.Metadata.ToListAsync(cancellationToken);
+
+        var collections = metadata
+            .DistinctBy(m => m.Title)
+            .ToDictionary(m => m.Title, m => m.CollectionName);
 
         ChatHistory history = [];
         history.AddSystemMessage("""
